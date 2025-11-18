@@ -1,0 +1,107 @@
+#ifndef MINISHELL_H
+# define MINISHELL_H
+# define FAILURE 0
+# define SUCCESS 1
+
+/*-------------Includes--------------*/
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <stddef.h>
+#include <stdbool.h>
+
+/*-------------ENUMS------------------*/
+
+enum e_token_type
+{
+	SPACE = 1,
+	WORD,
+	VAR,
+	PIPE,
+	OUTPUT,
+	HEREDOC,
+	APPEND,
+	INPUT,
+	END
+};
+
+enum e_token_quote
+{
+	DEFAULT,
+	SINGLE,
+	DOUBLE
+};
+
+/*-------------Structs---------------*/
+
+typedef struct s_inout_fds
+{
+	char	*infile;
+	char	*outfile;
+	char	*heredoc_del;
+	bool	heredoc_quotes;
+	int	fd_in;
+	int	fd_out;
+	int	stdin_backup;
+	int	stdout_backup;
+}	t_inout_fds;
+
+typedef struct s_token
+{
+	char	*str;
+	char	*str_back;
+	bool	is_var_exist;
+	int	status;
+	int	type;
+	bool	to_join;
+	struct	s_token *prev;
+	struct	s_token	*next;
+}	t_token;
+
+typedef	struct s_command
+{
+	char	*command;
+	char	**args;
+	char	*path;
+	bool	pipe_out;
+	int	*pipe_fd;
+	t_inout_fds	*inout_fds;
+	struct	s_command	*next;
+	struct	s_command	*prev;
+}	t_command;
+
+/*---------------add other struct---------*/
+typedef	struct	s_data
+{
+	bool	interactive_mode;
+	t_token	*token;
+	char	*user_input;
+	char	**env;
+	char	*work_dir;
+	char	*old_work_dir;
+	t_command	*cmd;
+
+}	t_data;
+
+/*-------------------FUNCS----------------*/
+
+
+int	create_token(char *str, t_data *data);
+
+int	is_var(t_token **lst_token);
+int	is_invalid_ops(t_token **token);
+
+int	set_status(int status, char *str, int i);
+int	word_or_command(int *i, char *str, int start, t_data *data);
+
+t_token *lst_insert_between(t_token **head, t_token *to_del, t_token *insert);
+t_token *lst_new_token(char *str, char *str_back, int type, int status);
+void	lst_add_prev(t_token **head, t_token *new_token);
+void	lst_deltoken(t_token *token, void (*del)(void *));
+void	lst_clear(t_token **head, void (*del)(void *));
+
+			/*EXPAND*/
+
+int	expand_variables(t_data *data, t_token **token);
+#endif
