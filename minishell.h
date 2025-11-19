@@ -118,6 +118,6 @@ void	copy_to_new_str(char *n_str, char *var_val, int *j);
 bool	str_has_quotes(char *str);
 int	handle_quotes(t_data *data);
 int	quote_str_len(char *str, int count, int i);
-
+int	remove_quotes(t_token **token);
 
 #endif

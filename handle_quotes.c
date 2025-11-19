@@ -6,7 +6,7 @@ int	quote_str_len(char *str, int count, int i)
 {
 	int	status;
 
-	status = -1;
+	status = -1; //to check
 	while(str[i])
 	{
 		if ((str[i] == '\'' || str[i] == '\"') && status == DEFAULT)
