@@ -104,4 +104,20 @@ void	lst_clear(t_token **head, void (*del)(void *));
 			/*EXPAND*/
 
 int	expand_variables(t_data *data, t_token **token);
+char	*expand_var_heredoc(t_data *data, char *str);
+char	*recover_val(t_token *token, char *str, t_data *data);
+char	*var_id(char *str);
+int	var_len(char *str);
+bool	is_var_valid(char c);
+int	replace_var(t_token **token, char *var_value, int index);
+char	*replace_herdoc_var(char *str, char *var_val, int index);
+char	create_token_string(char *old_str, char *var_val, int n_size, int index);
+void	copy_to_new_str(char *n_str, char *var_val, int *j);
+
+			/*HANDLE QUOTES*/
+bool	str_has_quotes(char *str);
+int	handle_quotes(t_data *data);
+int	quote_str_len(char *str, int count, int i);
+
+
 #endif
