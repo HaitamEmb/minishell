@@ -94,12 +94,14 @@ int	is_invalid_ops(t_token **token);
 
 int	set_status(int status, char *str, int i);
 int	word_or_command(int *i, char *str, int start, t_data *data);
+int	is_command(char *str, int i);
 
 t_token *lst_insert_between(t_token **head, t_token *to_del, t_token *insert);
 t_token *lst_new_token(char *str, char *str_back, int type, int status);
 void	lst_add_prev(t_token **head, t_token *new_token);
 void	lst_deltoken(t_token *token, void (*del)(void *));
 void	lst_clear(t_token **head, void (*del)(void *));
+//to add for lexer; handle input : space and put the input into the structure to give for execution.
 
 			/*EXPAND*/
 
@@ -119,5 +121,20 @@ bool	str_has_quotes(char *str);
 int	handle_quotes(t_data *data);
 int	quote_str_len(char *str, int count, int i);
 int	remove_quotes(t_token **token);
+
+			/*PARSING*/
+
+void	parse_word(t_command **cmd, t_token **token);
+int	fill_args(t_token **token, t_command *last_cmd);
+int	add_args_default(t_token **token, t_command *last_cmd);
+int	add_args_echo(t_token **token, t_command *last_cmd);
+int	create_args_default(t_token **token, t_command *last_cmd);
+int	create_args_echo(t_token **token, t_command *last_cmd);
+int	args_len(t_token *tmp);
+int	args_len_echo(t_token *tmp);
+void	create_cmd(t_data *data, t_token *token);
+char	**copy_in_new_tab(int len, char **n_tab, t_command *last_cmd, t_token *tmp);
+void	del_empty_args(t_token **token);
+char	*join_vars(t_token **token);
 
 #endif
