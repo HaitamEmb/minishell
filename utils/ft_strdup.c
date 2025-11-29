@@ -12,11 +12,11 @@
 
 #include "minishell.h"
 
-char *ft_strdup(const char *s)
+char	*ft_strdup(const char *s)
 {
-	char *copy;
-	size_t len;
-	size_t i;
+	char	*copy;
+	size_t	len;
+	size_t	i;
 
 	if (!s)
 		return (NULL);

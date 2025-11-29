@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-static size_t word_len(const char *s, char c)
+static size_t	word_len(const char *s, char c)
 {
-	size_t len;
+	size_t	len;
 
 	len = 0;
 	while (s[len] && s[len] != c)
@@ -22,10 +22,10 @@ static size_t word_len(const char *s, char c)
 	return (len);
 }
 
-static size_t count_words(const char *s, char c)
+static size_t	count_words(const char *s, char c)
 {
-	size_t count;
-	size_t i;
+	size_t	count;
+	size_t	i;
 
 	if (!s)
 		return (0);
@@ -44,7 +44,7 @@ static size_t count_words(const char *s, char c)
 	return (count);
 }
 
-static void free_table(char **tab, size_t limit)
+static void	free_table(char **tab, size_t limit)
 {
 	while (limit > 0)
 	{
@@ -54,17 +54,11 @@ static void free_table(char **tab, size_t limit)
 	free(tab);
 }
 
-char **ft_split(char const *s, char c)
+static char	**fill_tab(char **tab, char const *s, char c)
 {
-	char **tab;
-	size_t idx;
-	size_t len;
+	size_t	idx;
+	size_t	len;
 
-	if (!s)
-		return (NULL);
-	tab = ft_calloc(count_words(s, c) + 1, sizeof(char *));
-	if (!tab)
-		return (NULL);
 	idx = 0;
 	while (*s)
 	{
@@ -83,6 +77,17 @@ char **ft_split(char const *s, char c)
 			s += len;
 		}
 	}
-	tab[idx] = NULL;
 	return (tab);
+}
+
+char	**ft_split(char const *s, char c)
+{
+	char	**tab;
+
+	if (!s)
+		return (NULL);
+	tab = ft_calloc(count_words(s, c) + 1, sizeof(char *));
+	if (!tab)
+		return (NULL);
+	return (fill_tab(tab, s, c));
 }

@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-size_t ft_strlen(const char *str)
+size_t	ft_strlen(const char *str)
 {
-	size_t len;
+	size_t	len;
 
 	if (!str)
 		return (0);

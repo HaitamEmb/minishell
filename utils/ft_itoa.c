@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-static size_t n_len(long nb)
+static size_t	n_len(long nb)
 {
-	size_t len;
+	size_t	len;
 
 	len = 1;
 	if (nb < 0)
@@ -30,11 +30,11 @@ static size_t n_len(long nb)
 	return (len);
 }
 
-char *ft_itoa(int n)
+char	*ft_itoa(int n)
 {
-	char *str;
-	long nb;
-	size_t len;
+	char	*str;
+	long	nb;
+	size_t	len;
 
 	nb = n;
 	len = n_len(nb);
@@ -49,7 +49,7 @@ char *ft_itoa(int n)
 		str[len] = (nb % 10) + '0';
 		nb /= 10;
 		if (nb == 0)
-			break;
+			break ;
 	}
 	if (n < 0)
 		str[0] = '-';
