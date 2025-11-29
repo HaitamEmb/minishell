@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/29 21:46:32 by isingara          #+#    #+#             */
+/*   Updated: 2025/11/29 21:46:32 by isingara         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 int g_exit_status = 0;
@@ -162,9 +174,12 @@ int run_execution(t_data *data)
 	pids = malloc(sizeof(pid_t) * count);
 	if (!pids)
 		return (FAILURE);
+	signal(SIGINT, SIG_IGN);
+	signal(SIGQUIT, SIG_IGN);
 	ret = fork_pipeline(data, pids, &launched);
 	if (launched > 0)
 		wait_children(pids, launched);
+	setup_signals();
 	free(pids);
 	free_all_pipes(data->cmd);
 	return (ret);

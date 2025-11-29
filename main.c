@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/29 22:33:00 by isingara          #+#    #+#             */
+/*   Updated: 2025/11/29 22:33:00 by isingara         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void init_data(t_data *data, char **envp)
@@ -54,6 +66,7 @@ int main(int argc, char **argv, char **envp)
 	(void)argc;
 	(void)argv;
 	init_data(&data, envp);
+	setup_signals();
 	while (1)
 	{
 		data.user_input = readline("minishell$ ");

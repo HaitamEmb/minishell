@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   executor_child.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/29 22:30:27 by isingara          #+#    #+#             */
+/*   Updated: 2025/11/29 22:30:27 by isingara         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
 static void close_pipeline_pipes(t_command *head)
@@ -99,6 +111,7 @@ static int ensure_args(t_command *cmd)
 
 void child_execute(t_data *data, t_command *cmd)
 {
+	setup_child_signals();
 	if (ensure_args(cmd) == FAILURE)
 		exit(1);
 	if (setup_input(cmd) == FAILURE || setup_output(cmd) == FAILURE)

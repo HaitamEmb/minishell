@@ -36,6 +36,7 @@ SRCS		= \
 	execution/heredoc.c \
 	execution/path_utils.c \
 	execution/redirections.c \
+	execution/signals.c \
 	utils/ft_calloc.c \
 	utils/ft_is.c \
 	utils/ft_itoa.c \

@@ -18,6 +18,7 @@
 #include <string.h>
 #include <signal.h>
 #include <limits.h>
+#include <stdint.h>
 
 #ifndef _WIN32
 #include <sys/wait.h>
@@ -46,7 +47,7 @@
 
 enum e_token_type
 {
-	SPACE = 1,
+	TOKEN_SPACE = 1,
 	WORD,
 	VAR,
 	PIPE,
@@ -215,5 +216,10 @@ int build_heredoc(t_data *data, t_inout_fds *io);
 void child_execute(t_data *data, t_command *cmd);
 char *resolve_command_path(t_data *data, t_command *cmd);
 int run_execution(t_data *data);
+
+/*SIGNALS*/
+void setup_signals(void);
+void setup_child_signals(void);
+void setup_heredoc_signals(void);
 
 #endif

@@ -3,7 +3,7 @@
 int is_command(char *str, int i)
 {
 	if ((str[i] > 8 && str[i] < 14) || str[i] == 32)
-		return (SPACE);
+		return (TOKEN_SPACE);
 	else if (str[i] == '|')
 		return (PIPE);
 	else if (str[i] == '<' && str[i + 1] == '<')
