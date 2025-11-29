@@ -12,76 +12,27 @@
 
 #include "minishell.h"
 
-static void close_pipeline_pipes(t_command *head)
+static void	print_exec_error(char *cmd, char *msg)
 {
-	while (head)
+	write(STDERR_FILENO, SHELL_NAME, ft_strlen(SHELL_NAME));
+	write(STDERR_FILENO, ": ", 2);
+	if (cmd)
 	{
-		if (head->pipe_fd)
-		{
-			if (head->pipe_fd[0] >= 0)
-				close(head->pipe_fd[0]);
-			if (head->pipe_fd[1] >= 0)
-				close(head->pipe_fd[1]);
-		}
-		head = head->next;
+		write(STDERR_FILENO, cmd, ft_strlen(cmd));
+		write(STDERR_FILENO, ": ", 2);
 	}
+	write(STDERR_FILENO, msg, ft_strlen(msg));
+	write(STDERR_FILENO, "\n", 1);
 }
 
-static int setup_input(t_command *cmd)
-{
-	if (cmd->inout_fds && cmd->inout_fds->fd_in >= 0)
-	{
-		if (dup2(cmd->inout_fds->fd_in, STDIN_FILENO) == -1)
-			return (FAILURE);
-	}
-	else if (cmd->prev && cmd->prev->pipe_fd)
-	{
-		if (dup2(cmd->prev->pipe_fd[0], STDIN_FILENO) == -1)
-			return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-static int setup_output(t_command *cmd)
-{
-	if (cmd->inout_fds && cmd->inout_fds->fd_out >= 0)
-	{
-		if (dup2(cmd->inout_fds->fd_out, STDOUT_FILENO) == -1)
-			return (FAILURE);
-	}
-	else if (cmd->pipe_out && cmd->pipe_fd)
-	{
-		if (dup2(cmd->pipe_fd[1], STDOUT_FILENO) == -1)
-			return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
-static void execve_error(t_command *cmd)
+static void	execve_error(t_command *cmd)
 {
 	if (!cmd->command || cmd->command[0] == '\0')
-	{
-		write(STDERR_FILENO, SHELL_NAME, ft_strlen(SHELL_NAME));
-		write(STDERR_FILENO, ": : command not found\n",
-			  sizeof(": : command not found\n") - 1);
-	}
+		print_exec_error(NULL, ": command not found");
 	else if (errno == ENOENT)
-	{
-		write(STDERR_FILENO, SHELL_NAME, ft_strlen(SHELL_NAME));
-		write(STDERR_FILENO, ": ", sizeof(": ") - 1);
-		write(STDERR_FILENO, cmd->command, ft_strlen(cmd->command));
-		write(STDERR_FILENO, ": command not found\n",
-			  sizeof(": command not found\n") - 1);
-	}
+		print_exec_error(cmd->command, "command not found");
 	else
-	{
-		write(STDERR_FILENO, SHELL_NAME, ft_strlen(SHELL_NAME));
-		write(STDERR_FILENO, ": ", sizeof(": ") - 1);
-		write(STDERR_FILENO, cmd->command, ft_strlen(cmd->command));
-		write(STDERR_FILENO, ": ", sizeof(": ") - 1);
-		write(STDERR_FILENO, strerror(errno), ft_strlen(strerror(errno)));
-		write(STDERR_FILENO, "\n", 1);
-	}
+		print_exec_error(cmd->command, strerror(errno));
 	if (errno == EACCES)
 		exit(126);
 	if (errno == ENOENT)
@@ -89,7 +40,7 @@ static void execve_error(t_command *cmd)
 	exit(1);
 }
 
-static int ensure_args(t_command *cmd)
+static int	ensure_args(t_command *cmd)
 {
 	if (!cmd->command)
 		return (FAILURE);
@@ -109,7 +60,7 @@ static int ensure_args(t_command *cmd)
 	return (SUCCESS);
 }
 
-void child_execute(t_data *data, t_command *cmd)
+void	child_execute(t_data *data, t_command *cmd)
 {
 	setup_child_signals();
 	if (ensure_args(cmd) == FAILURE)

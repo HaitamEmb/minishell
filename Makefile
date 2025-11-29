@@ -31,8 +31,12 @@ SRCS		= \
 	execution/builtin_exit.c \
 	execution/builtins.c \
 	execution/env_utils.c \
+	execution/env_utils2.c \
+	execution/export_utils.c \
 	execution/executor.c \
 	execution/executor_child.c \
+	execution/executor_utils.c \
+	execution/executor_utils2.c \
 	execution/heredoc.c \
 	execution/path_utils.c \
 	execution/redirections.c \

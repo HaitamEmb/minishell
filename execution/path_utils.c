@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-static char *join_dir_cmd(const char *dir, const char *cmd)
+static char	*join_dir_cmd(const char *dir, const char *cmd)
 {
-	char *tmp;
-	char *result;
+	char	*tmp;
+	char	*result;
 
 	tmp = ft_strjoin(dir, "/");
 	if (!tmp)
@@ -25,10 +25,10 @@ static char *join_dir_cmd(const char *dir, const char *cmd)
 	return (result);
 }
 
-static char *search_in_path(char **paths, const char *cmd)
+static char	*search_in_path(char **paths, const char *cmd)
 {
-	char *candidate;
-	int i;
+	char	*candidate;
+	int		i;
 
 	i = 0;
 	while (paths && paths[i])
@@ -44,11 +44,11 @@ static char *search_in_path(char **paths, const char *cmd)
 	return (NULL);
 }
 
-char *resolve_command_path(t_data *data, t_command *cmd)
+char	*resolve_command_path(t_data *data, t_command *cmd)
 {
-	char *path_value;
-	char **paths;
-	char *resolved;
+	char	*path_value;
+	char	**paths;
+	char	*resolved;
 
 	if (!cmd || !cmd->command || cmd->command[0] == '\0')
 		return (NULL);

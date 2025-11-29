@@ -12,7 +12,7 @@
 
 #include "../minishell.h"
 
-void handle_sigint(int sig)
+void	handle_sigint(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
@@ -22,19 +22,19 @@ void handle_sigint(int sig)
 	g_exit_status = 130;
 }
 
-void setup_signals(void)
+void	setup_signals(void)
 {
 	signal(SIGINT, handle_sigint);
 	signal(SIGQUIT, SIG_IGN);
 }
 
-void setup_child_signals(void)
+void	setup_child_signals(void)
 {
 	signal(SIGINT, SIG_DFL);
 	signal(SIGQUIT, SIG_DFL);
 }
 
-void handle_heredoc_sigint(int sig)
+void	handle_heredoc_sigint(int sig)
 {
 	(void)sig;
 	write(STDOUT_FILENO, "\n", 1);
@@ -42,7 +42,7 @@ void handle_heredoc_sigint(int sig)
 	g_exit_status = 130;
 }
 
-void setup_heredoc_signals(void)
+void	setup_heredoc_signals(void)
 {
 	signal(SIGINT, handle_heredoc_sigint);
 	signal(SIGQUIT, SIG_IGN);

@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-static int echo_has_only_n(char *arg)
+static int	echo_has_only_n(char *arg)
 {
-	int i;
+	int	i;
 
 	if (!arg || arg[0] != '-')
 		return (0);
@@ -26,10 +26,10 @@ static int echo_has_only_n(char *arg)
 	return (arg[i] == '\0');
 }
 
-int builtin_echo(t_command *cmd)
+int	builtin_echo(t_command *cmd)
 {
-	int i;
-	int suppress_newline;
+	int	i;
+	int	suppress_newline;
 
 	if (!cmd || !cmd->args)
 		return (SUCCESS);
@@ -52,10 +52,10 @@ int builtin_echo(t_command *cmd)
 	return (SUCCESS);
 }
 
-int builtin_pwd(void)
+int	builtin_pwd(void)
 {
-	char buffer[PATH_MAX];
-	char *cwd;
+	char	buffer[PATH_MAX];
+	char	*cwd;
 
 	cwd = getcwd(buffer, PATH_MAX);
 	if (!cwd)
@@ -68,9 +68,9 @@ int builtin_pwd(void)
 	return (SUCCESS);
 }
 
-int builtin_env(t_data *data)
+int	builtin_env(t_data *data)
 {
-	int i;
+	int	i;
 
 	if (!data || !data->env)
 		return (SUCCESS);

@@ -182,6 +182,7 @@ int ft_strncmp(const char *s1, const char *s2, size_t n);
 int ft_strcmp(const char *s1, const char *s2);
 int ft_isalnum(int c);
 int ft_isnum(int c);
+int is_numeric_str(const char *str);
 char *ft_substr(char const *s, unsigned int start, size_t len);
 char *ft_strjoin(char const *s1, char const *s2);
 char **ft_split(char const *s, char c);
@@ -196,7 +197,8 @@ char *ms_getenv(t_data *data, const char *name);
 int ms_setenv(t_data *data, const char *name, const char *value);
 int ms_unsetenv(t_data *data, const char *name);
 int is_valid_identifier(const char *str);
-int env_key_len(const char *entry);
+int create_new_env_array(t_data *data, char ***new_env, size_t *size);
+int create_env_entry(const char *name, const char *value, char **entry);
 
 int is_builtin(const char *cmd);
 int exec_builtin(t_data *data, t_command *cmd, bool in_child);
@@ -216,6 +218,23 @@ int build_heredoc(t_data *data, t_inout_fds *io);
 void child_execute(t_data *data, t_command *cmd);
 char *resolve_command_path(t_data *data, t_command *cmd);
 int run_execution(t_data *data);
+
+/* export_utils.c */
+void print_sorted_env(char **env);
+int env_key_len(const char *entry);
+char **dup_env(char **envp);
+
+/* executor_utils.c */
+size_t count_commands(t_command *cmd);
+void close_pipe_pair(int *pipe_fd);
+void free_all_pipes(t_command *cmd);
+void close_pipeline_pipes(t_command *head);
+
+/* executor_utils2.c */
+int create_pipe_for_cmd(t_command *cmd);
+void handle_parent_pipes(t_command *cmd);
+int setup_input(t_command *cmd);
+int setup_output(t_command *cmd);
 
 /*SIGNALS*/
 void setup_signals(void);

@@ -12,10 +12,10 @@
 
 #include "minishell.h"
 
-static int update_pwd(t_data *data, const char *oldpwd)
+static int	update_pwd(t_data *data, const char *oldpwd)
 {
-	char buffer[PATH_MAX];
-	char *cwd;
+	char	buffer[PATH_MAX];
+	char	*cwd;
 
 	cwd = getcwd(buffer, PATH_MAX);
 	if (!cwd)
@@ -25,7 +25,7 @@ static int update_pwd(t_data *data, const char *oldpwd)
 	return (ms_setenv(data, "PWD", cwd));
 }
 
-static int cd_error(const char *path)
+static int	cd_error(const char *path)
 {
 	write(STDERR_FILENO, SHELL_NAME, ft_strlen(SHELL_NAME));
 	write(STDERR_FILENO, ": cd: ", sizeof(": cd: ") - 1);
@@ -36,16 +36,10 @@ static int cd_error(const char *path)
 	return (1);
 }
 
-int builtin_cd(t_data *data, t_command *cmd)
+static char	*get_target(t_data *data, t_command *cmd)
 {
-	char *target;
-	char *home;
-	char oldpwd[PATH_MAX];
+	char	*home;
 
-	if (!data || !cmd)
-		return (FAILURE);
-	if (!getcwd(oldpwd, PATH_MAX))
-		oldpwd[0] = '\0';
 	if (!cmd->args || !cmd->args[1])
 	{
 		home = ms_getenv(data, "HOME");
@@ -53,20 +47,36 @@ int builtin_cd(t_data *data, t_command *cmd)
 		{
 			write(STDERR_FILENO, SHELL_NAME, ft_strlen(SHELL_NAME));
 			write(STDERR_FILENO, ": cd: HOME not set\n",
-				  sizeof(": cd: HOME not set\n") - 1);
-			return (1);
+				sizeof(": cd: HOME not set\n") - 1);
+			return (NULL);
 		}
-		target = home;
+		return (home);
 	}
-	else
-		target = cmd->args[1];
-	if (cmd->args && cmd->args[1] && cmd->args[2])
-	{
-		write(STDERR_FILENO, SHELL_NAME, ft_strlen(SHELL_NAME));
-		write(STDERR_FILENO, ": cd: too many arguments\n",
-			  sizeof(": cd: too many arguments\n") - 1);
+	return (cmd->args[1]);
+}
+
+static int	cd_too_many_args(void)
+{
+	write(STDERR_FILENO, SHELL_NAME, ft_strlen(SHELL_NAME));
+	write(STDERR_FILENO, ": cd: too many arguments\n",
+		sizeof(": cd: too many arguments\n") - 1);
+	return (1);
+}
+
+int	builtin_cd(t_data *data, t_command *cmd)
+{
+	char	*target;
+	char	oldpwd[PATH_MAX];
+
+	if (!data || !cmd)
+		return (FAILURE);
+	if (!getcwd(oldpwd, PATH_MAX))
+		oldpwd[0] = '\0';
+	target = get_target(data, cmd);
+	if (!target)
 		return (1);
-	}
+	if (cmd->args && cmd->args[1] && cmd->args[2])
+		return (cd_too_many_args());
 	if (chdir(target) == -1)
 	{
 		if (!cmd->args || !cmd->args[1])

@@ -12,9 +12,9 @@
 
 #include "minishell.h"
 
-static int open_input(t_inout_fds *io)
+static int	open_input(t_inout_fds *io)
 {
-	int fd;
+	int	fd;
 
 	if (!io || !io->infile)
 		return (SUCCESS);
@@ -30,10 +30,10 @@ static int open_input(t_inout_fds *io)
 	return (SUCCESS);
 }
 
-static int open_output(t_inout_fds *io)
+static int	open_output(t_inout_fds *io)
 {
-	int fd;
-	int flags;
+	int	fd;
+	int	flags;
 
 	if (!io || !io->outfile)
 		return (SUCCESS);
@@ -54,9 +54,9 @@ static int open_output(t_inout_fds *io)
 	return (SUCCESS);
 }
 
-int prepare_redirections(t_data *data, t_command *cmd)
+int	prepare_redirections(t_data *data, t_command *cmd)
 {
-	t_inout_fds *io;
+	t_inout_fds	*io;
 
 	(void)data;
 	if (!cmd)
@@ -76,7 +76,7 @@ int prepare_redirections(t_data *data, t_command *cmd)
 	return (SUCCESS);
 }
 
-int apply_parent_redirs(t_inout_fds *io)
+int	apply_parent_redirs(t_inout_fds *io)
 {
 	if (!io)
 		return (SUCCESS);
@@ -97,10 +97,10 @@ int apply_parent_redirs(t_inout_fds *io)
 	return (SUCCESS);
 }
 
-void restore_parent_redirs(t_inout_fds *io)
+void	restore_parent_redirs(t_inout_fds *io)
 {
 	if (!io)
-		return;
+		return ;
 	if (io->stdin_backup != -1)
 	{
 		dup2(io->stdin_backup, STDIN_FILENO);
@@ -112,21 +112,5 @@ void restore_parent_redirs(t_inout_fds *io)
 		dup2(io->stdout_backup, STDOUT_FILENO);
 		close(io->stdout_backup);
 		io->stdout_backup = -1;
-	}
-}
-
-void close_command_fds(t_command *cmd)
-{
-	if (!cmd || !cmd->inout_fds)
-		return;
-	if (cmd->inout_fds->fd_in >= 0)
-	{
-		close(cmd->inout_fds->fd_in);
-		cmd->inout_fds->fd_in = -1;
-	}
-	if (cmd->inout_fds->fd_out >= 0)
-	{
-		close(cmd->inout_fds->fd_out);
-		cmd->inout_fds->fd_out = -1;
 	}
 }

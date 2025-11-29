@@ -12,68 +12,11 @@
 
 #include "minishell.h"
 
-int g_exit_status = 0;
-
-static size_t count_commands(t_command *cmd)
+static int	wait_children(pid_t *pids, size_t count)
 {
-	size_t count;
-
-	count = 0;
-	while (cmd)
-	{
-		count++;
-		cmd = cmd->next;
-	}
-	return (count);
-}
-
-static int create_pipe_for_cmd(t_command *cmd)
-{
-	if (!cmd->next)
-	{
-		cmd->pipe_out = false;
-		return (SUCCESS);
-	}
-	cmd->pipe_fd = malloc(sizeof(int) * 2);
-	if (!cmd->pipe_fd)
-		return (FAILURE);
-	if (pipe(cmd->pipe_fd) == -1)
-	{
-		perror("pipe");
-		free(cmd->pipe_fd);
-		cmd->pipe_fd = NULL;
-		return (FAILURE);
-	}
-	cmd->pipe_out = true;
-	return (SUCCESS);
-}
-
-static void close_pipe_pair(int *pipe_fd)
-{
-	if (!pipe_fd)
-		return;
-	if (pipe_fd[0] >= 0)
-		close(pipe_fd[0]);
-	if (pipe_fd[1] >= 0)
-		close(pipe_fd[1]);
-	free(pipe_fd);
-}
-
-static void free_all_pipes(t_command *cmd)
-{
-	while (cmd)
-	{
-		close_pipe_pair(cmd->pipe_fd);
-		cmd->pipe_fd = NULL;
-		cmd = cmd->next;
-	}
-}
-
-static int wait_children(pid_t *pids, size_t count)
-{
-	size_t i;
-	int status;
-	int ret;
+	size_t	i;
+	int		status;
+	int		ret;
 
 	ret = SUCCESS;
 	i = 0;
@@ -94,9 +37,9 @@ static int wait_children(pid_t *pids, size_t count)
 	return (ret);
 }
 
-static int execute_single_builtin(t_data *data, t_command *cmd)
+static int	execute_single_builtin(t_data *data, t_command *cmd)
 {
-	int status;
+	int	status;
 
 	if (prepare_redirections(data, cmd) == FAILURE)
 	{
@@ -115,10 +58,22 @@ static int execute_single_builtin(t_data *data, t_command *cmd)
 	return (status);
 }
 
-static int fork_pipeline(t_data *data, pid_t *pids, size_t *launched)
+static int	launch_child(t_data *data, t_command *cmd, pid_t *pid)
 {
-	t_command *cmd;
-	pid_t pid;
+	*pid = fork();
+	if (*pid == -1)
+	{
+		perror("fork");
+		return (FAILURE);
+	}
+	if (*pid == 0)
+		child_execute(data, cmd);
+	return (SUCCESS);
+}
+
+static int	fork_pipeline(t_data *data, pid_t *pids, size_t *launched)
+{
+	t_command	*cmd;
 
 	cmd = data->cmd;
 	*launched = 0;
@@ -131,40 +86,22 @@ static int fork_pipeline(t_data *data, pid_t *pids, size_t *launched)
 			g_exit_status = 1;
 			return (FAILURE);
 		}
-		pid = fork();
-		if (pid == -1)
-		{
-			perror("fork");
+		if (launch_child(data, cmd, &pids[*launched]) == FAILURE)
 			return (FAILURE);
-		}
-		if (pid == 0)
-			child_execute(data, cmd);
-		pids[*launched] = pid;
 		(*launched)++;
-		if (cmd->prev && cmd->prev->pipe_fd)
-		{
-			close(cmd->prev->pipe_fd[0]);
-			close(cmd->prev->pipe_fd[1]);
-			free(cmd->prev->pipe_fd);
-			cmd->prev->pipe_fd = NULL;
-		}
-		if (cmd->pipe_fd)
-		{
-			close(cmd->pipe_fd[1]);
-			cmd->pipe_fd[1] = -1;
-		}
+		handle_parent_pipes(cmd);
 		close_command_fds(cmd);
 		cmd = cmd->next;
 	}
 	return (SUCCESS);
 }
 
-int run_execution(t_data *data)
+int	run_execution(t_data *data)
 {
-	size_t count;
-	pid_t *pids;
-	int ret;
-	size_t launched;
+	size_t	count;
+	pid_t	*pids;
+	int		ret;
+	size_t	launched;
 
 	if (!data || !data->cmd)
 		return (SUCCESS);
