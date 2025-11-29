@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-int	is_command(char *str, int i)
+int is_command(char *str, int i)
 {
 	if ((str[i] > 8 && str[i] < 14) || str[i] == 32)
 		return (SPACE);
@@ -16,11 +16,11 @@ int	is_command(char *str, int i)
 		return (OUTPUT);
 	else if (str[i] == '\0')
 		return (END);
-	else 
+	else
 		return (0);
 }
 
-int	set_status(int status, char *str, int i)
+int set_status(int status, char *str, int i)
 {
 	if (str[i] == '\'' && status == DEFAULT)
 		status = SINGLE;
@@ -33,7 +33,7 @@ int	set_status(int status, char *str, int i)
 	return (status);
 }
 
-int	word_or_command(int *i, char *str, int start, t_data *data)
+int word_or_command(int *i, char *str, int start, t_data *data)
 {
 	int type;
 
@@ -41,11 +41,10 @@ int	word_or_command(int *i, char *str, int start, t_data *data)
 	if (type)
 	{
 		if ((*i) != 0 && is_command(str, (*i) - 1) == 0)
-			word(); //add later
-		if (type == APPEND || type == HEREDOC || type == PIPE 
-			|| type == INPUT || type == OUTPUT || type == END)
+			word(); // add later
+		if (type == APPEND || type == HEREDOC || type == PIPE || type == INPUT || type == OUTPUT || type == END)
 		{
-			command(); //add later
+			command(); // add later
 			if (type == APPEND || type == HEREDOC)
 				(*i)++;
 		}

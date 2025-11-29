@@ -1,8 +1,8 @@
 #include "minishell.h"
 
-int	args_len(t_token *tmp)
+int args_len(t_token *tmp)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (tmp && (tmp->type == WORD || tmp->type == VAR))
@@ -13,11 +13,11 @@ int	args_len(t_token *tmp)
 	return (i);
 }
 
-int	create_args_default(t_token **token, t_command *last_cmd)
+int create_args_default(t_token **token, t_command *last_cmd)
 {
-	int	i;
-	int	nb_args;
-	t_token	*tmp;
+	int i;
+	int nb_args;
+	t_token *tmp;
 
 	i = 0;
 	tmp = *token;
@@ -40,10 +40,10 @@ int	create_args_default(t_token **token, t_command *last_cmd)
 	return (SUCCESS);
 }
 
-static char	**copy_default_in_tab(int len, char **n_tab, t_command *last_cmd, t_token **token)
+static char **copy_default_in_tab(int len, char **n_tab, t_command *last_cmd, t_token **token)
 {
-	int	i;
-	t_token	*tmp;
+	int i;
+	t_token *tmp;
 
 	i = 0;
 	tmp = token;
@@ -64,10 +64,10 @@ static char	**copy_default_in_tab(int len, char **n_tab, t_command *last_cmd, t_
 
 int add_args_default(t_token **token, t_command *last_cmd)
 {
-	int	i;
-	int	len;
-	char	**n_tab;
-	t_token	*tmp;
+	int i;
+	int len;
+	char **n_tab;
+	t_token *tmp;
 
 	i = 0;
 	tmp = *token;
@@ -89,7 +89,7 @@ int add_args_default(t_token **token, t_command *last_cmd)
 	return (SUCCESS);
 }
 
-int	fill_args(t_token **token, t_command *last_cmd)
+int fill_args(t_token **token, t_command *last_cmd)
 {
 	if (!ft_strcmp(last_cmd->command, "echo"))
 	{

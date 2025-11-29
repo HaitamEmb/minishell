@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-//take a token that has variable and either delete it if has no value, or replace with its actual value
+// take a token that has variable and either delete it if has no value, or replace with its actual value
 
 static int del_var(t_token **token, char *str, int index)
 {
-	int	i;
-	int	j;
-	int	len;
-	char	*n_str;
+	int i;
+	int j;
+	int len;
+	char *n_str;
 
 	i = 0;
 	j = 0;
@@ -33,8 +33,8 @@ static int del_var(t_token **token, char *str, int index)
 
 static char *del_replace(t_token **token, char *str, char *var_val, int index)
 {
-	char	*n_str;
-	int	n_size;
+	char *n_str;
+	int n_size;
 
 	n_size = (ft_strlen(str) - var_len(str + index)) + ft_strlen(var_val);
 	n_str = create_token_string(str, var_val, n_size, index);
@@ -46,8 +46,7 @@ static char *del_replace(t_token **token, char *str, char *var_val, int index)
 	return (n_str);
 }
 
-
-int	replace_var(t_token **token, char *var_value, int index)
+int replace_var(t_token **token, char *var_value, int index)
 {
 	if (var_value == NULL)
 	{
@@ -69,9 +68,9 @@ int	replace_var(t_token **token, char *var_value, int index)
 	return (0);
 }
 
-char	*replace_herdoc_var(char *str, char *var_val, int index)
+char *replace_herdoc_var(char *str, char *var_val, int index)
 {
-	char	*tmp;
+	char *tmp;
 
 	tmp = NULL;
 	if (var_val == NULL)

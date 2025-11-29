@@ -1,7 +1,7 @@
 #include "minishell.h"
-//remove quotes while respecting quoting rules
+// remove quotes while respecting quoting rules
 
-static bool	change_status_default(t_token **token, int *i)
+static bool change_status_default(t_token **token, int *i)
 {
 	if (((*token)->str[*i] == '\'' && (*token)->status == SINGLE) || ((*token)->str[*i] == '\"' && (*token)->status == DOUBLE))
 	{
@@ -13,7 +13,7 @@ static bool	change_status_default(t_token **token, int *i)
 		return (false);
 }
 
-static bool	quote_default(t_token **token, int i)
+static bool quote_default(t_token **token, int i)
 {
 	if ((*token)->str[i] == '\'' || (*token)->str[i] == '\"' && (*token)->status == DEFAULT)
 		return (true);
@@ -21,7 +21,7 @@ static bool	quote_default(t_token **token, int i)
 		return (false);
 }
 
-static void	change_status_quote(t_token **token, int *i)
+static void change_status_quote(t_token **token, int *i)
 {
 	if ((*token)->str[*i] == '\'')
 		(*token)->status = SINGLE;
@@ -30,17 +30,17 @@ static void	change_status_quote(t_token **token, int *i)
 	(*i)++;
 }
 
-int	remove_quotes(t_token **token)
+int remove_quotes(t_token **token)
 {
-	char	*line;
-	int	i;
-	int	j;
+	char *line;
+	int i;
+	int j;
 
 	i = 0;
 	j = 0;
 	line = malloc(sizeof(char) * quote_str_len((*token)->str, i, i));
 	if (!line)
-		return(1);
+		return (1);
 	while ((*token)->str[i])
 	{
 		if (quote_default(token, i) == true)

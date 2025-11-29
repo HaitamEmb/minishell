@@ -2,7 +2,7 @@
 
 char **copy_in_new_tab(int len, char **n_tab, t_command *last_cmd, t_token *tmp)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (i < len)
@@ -23,9 +23,9 @@ char **copy_in_new_tab(int len, char **n_tab, t_command *last_cmd, t_token *tmp)
 	return (n_tab);
 }
 
-void	del_empty_args(t_token **token)
+void del_empty_args(t_token **token)
 {
-	t_token	*tmp;
+	t_token *tmp;
 
 	tmp = *token;
 	while (tmp->type == WORD || tmp->type == VAR)
@@ -35,17 +35,17 @@ void	del_empty_args(t_token **token)
 			tmp = tmp->next;
 			if (tmp == (*token)->next)
 				(*token) = (*token)->next;
-			lst_deltoken(tmp->prev, free_ptr); //add free_ptr
+			lst_deltoken(tmp->prev, free_ptr); // add free_ptr
 		}
 		else
 			tmp = tmp->next;
 	}
 }
 
-char	*join_vars(t_token **token)
+char *join_vars(t_token **token)
 {
-	t_token	*tmp;
-	char	*str;
+	t_token *tmp;
+	char *str;
 
 	tmp = *token;
 	str = ft_strdup(tmp->str);

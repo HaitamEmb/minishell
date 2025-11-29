@@ -1,14 +1,14 @@
 #include "minishell.h"
-//extarct variable names from str
+// extarct variable names from str
 
-bool	is_var_valid(char c)
+bool is_var_valid(char c)
 {
-	return(ft_isalnum((unsigned char) c) || c == '_');
+	return (ft_isalnum((unsigned char)c) || c == '_');
 }
-int	var_len(char *str)
+int var_len(char *str)
 {
-	int	i;
-	int	count;
+	int i;
+	int count;
 
 	count = 0;
 	i = 0;
@@ -26,14 +26,14 @@ int	var_len(char *str)
 	}
 	return (count);
 }
-//find the $ and get the var name
-char	*var_id(char *str)
+// find the $ and get the var name
+char *var_id(char *str)
 {
-	char	*var;
-	char	*tmp;
-	int	start;
-	int	len;
-	int	i;
+	char *var;
+	char *tmp;
+	int start;
+	int len;
+	int i;
 
 	i = 0;
 	start = 0;

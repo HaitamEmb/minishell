@@ -1,16 +1,15 @@
 #include "minishell.h"
 
+// when command is echo
 
-//when command is echo
-
-int	args_len_echo(t_token *tmp)
+int args_len_echo(t_token *tmp)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (tmp && (tmp->type == WORD || tmp->type == VAR))
 	{
-		if (tmp->type == VAR  && tmp->to_join == true)
+		if (tmp->type == VAR && tmp->to_join == true)
 		{
 			while (tmp->type == VAR && tmp->to_join == true)
 				tmp = tmp->next;
@@ -25,11 +24,11 @@ int	args_len_echo(t_token *tmp)
 	return (i);
 }
 
-int	create_args_echo(t_token **token, t_command *last_cmd)
+int create_args_echo(t_token **token, t_command *last_cmd)
 {
-	int	nb_args;
-	t_token	*tmp;
-	int	i;
+	int nb_args;
+	t_token *tmp;
+	int i;
 
 	del_empty_args(token);
 	tmp = *token;
@@ -54,16 +53,14 @@ int	create_args_echo(t_token **token, t_command *last_cmd)
 	return (SUCCESS);
 }
 
-
-
-int	add_args_echo(t_token **token, t_command *last_cmd)
+int add_args_echo(t_token **token, t_command *last_cmd)
 {
-	int	len;
-	int	nb_args;
-	int	**n_tab;
-	t_token	*tmp;
+	int len;
+	int nb_args;
+	int **n_tab;
+	t_token *tmp;
 
-	del_empty_args(token); //delete var empty
+	del_empty_args(token); // delete var empty
 	tmp = *token;
 	nb_args = args_len_echo(tmp);
 	len = 0;

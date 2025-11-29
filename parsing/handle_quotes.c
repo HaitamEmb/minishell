@@ -1,13 +1,13 @@
 #include "minishell.h"
 
-//handle quotes, we go through string get the length of the word, strip it out of quotes.
+// handle quotes, we go through string get the length of the word, strip it out of quotes.
 
-int	quote_str_len(char *str, int count, int i)
+int quote_str_len(char *str, int count, int i)
 {
-	int	status;
+	int status;
 
-	status = -1; //to check
-	while(str[i])
+	status = -1; // to check
+	while (str[i])
 	{
 		if ((str[i] == '\'' || str[i] == '\"') && status == DEFAULT)
 		{
@@ -30,9 +30,9 @@ int	quote_str_len(char *str, int count, int i)
 	return (count + 1);
 }
 
-bool	str_has_quotes(char *str)
+bool str_has_quotes(char *str)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	while (str[i])
@@ -44,10 +44,9 @@ bool	str_has_quotes(char *str)
 	return (false);
 }
 
+// remove quotes from each token in the token list
 
-//remove quotes from each token in the token list 
-
-int	handle_quotes(t_data *data)
+int handle_quotes(t_data *data)
 {
 	t_token *tmp;
 
