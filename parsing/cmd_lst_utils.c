@@ -1,4 +1,4 @@
-#include "minishell.h"
+#include "../minishell.h"
 
 static t_inout_fds *new_inout(void)
 {
