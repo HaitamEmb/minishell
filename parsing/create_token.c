@@ -28,7 +28,7 @@ int create_token(char *str, t_data *data)
 			else if (status == SINGLE)
 				// errmsg
 				// errmsg
-				return (1);
+			return (1);
 	}
 	return (0);
 }

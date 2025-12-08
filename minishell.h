@@ -121,6 +121,12 @@ extern int g_exit_status;
 
 /*-------------------FUNCS----------------*/
 
+/*--------------errors--------------------*/
+
+void	exit_minishell(t_data *data, int exno);
+int	errmsg_cmd(char *command, char *desc, char *emsg, int err_nb);
+void	errmsg(char *errmsg, char *desc, int quotes);
+
 int create_token(char *str, t_data *data);
 
 int is_var(t_token **lst_token);
