@@ -30,7 +30,7 @@
 #endif
 
 #ifndef PATH_MAX
-#define PATH_MAX 4096
+# define PATH_MAX 4096
 #endif
 
 #ifndef STDIN_FILENO
@@ -175,6 +175,21 @@ t_command *lst_new_cmd(bool pipe_out);
 void lst_add_back_cmd(t_command **head, t_command *new_cmd);
 t_command *lst_last_cmd(t_command *cmd);
 void clear_cmd_list(t_command **head);
+t_command lst_first_cmd(t_command *cmd); //DEPRECATED
+
+////////////////////////////////////////////////////
+void	lst_delone_cmd(t_command *lst, void(*del)(void *)); //deprecated
+void	parse_trunc(t_command **lst, t_token **token_lst);
+char	*get_relative_path(char *file_to_open);
+bool	remove_old_file_ref(t_inout_fds *io, bool infile);
+void	parse_input(t_command **last_cmd, t_token **token_lst);
+void	parse_append(t_command	**last_cmd, t_token **token_lst);
+void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst);
+bool	fill_heredoc(t_data *data, t_inout_fds *io, int fd);
+void	parse_pipe(t_command **cmd, t_token **token_lst);
+
+
+
 
 size_t ft_strlen(const char *str);
 char *ft_strdup(const char *s);
