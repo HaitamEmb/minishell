@@ -12,7 +12,7 @@ int create_token(char *str, t_data *data)
 
 	i = 0;
 	start = 0;
-	end = strlen(str); // change with ft_strlen
+	end = ft_strlen(str);
 	status = DEFAULT;
 	while (i <= end)
 	{
@@ -25,10 +25,10 @@ int create_token(char *str, t_data *data)
 	{
 		if (status = DOUBLE)
 			// errmsg
-			else if (status == SINGLE)
+		else if (status == SINGLE)
 				// errmsg
 				// errmsg
-			return (1);
+		return (1);
 	}
 	return (0);
 }
