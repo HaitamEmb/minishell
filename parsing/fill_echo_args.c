@@ -57,7 +57,7 @@ int add_args_echo(t_token **token, t_command *last_cmd)
 {
 	int len;
 	int nb_args;
-	int **n_tab;
+	char **n_tab;
 	t_token *tmp;
 
 	del_empty_args(token); // delete var empty

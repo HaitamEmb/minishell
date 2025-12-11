@@ -57,5 +57,5 @@ int handle_quotes(t_data *data)
 			remove_quotes(&tmp);
 		tmp = tmp->next;
 	}
-	return (0);
+	return (SUCCESS);
 }

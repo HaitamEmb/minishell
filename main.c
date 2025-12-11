@@ -6,11 +6,13 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 22:33:00 by isingara          #+#    #+#             */
-/*   Updated: 2025/11/29 22:33:00 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/11 17:45:17 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int g_exit_status = 0;
 
 static void init_data(t_data *data, char **envp)
 {
@@ -49,12 +51,16 @@ static void run_line(t_data *data)
 		return;
 	if (create_token(data->user_input, data) != SUCCESS)
 		return;
+	if (is_var(&data->token) != SUCCESS)
+		return;
 	if (handle_quotes(data) != SUCCESS)
 		return;
 	if (expand_variables(data, &data->token) != SUCCESS)
 		return;
 	remove_quotes(&data->token);
 	create_cmd(data, data->token);
+	if (g_exit_status == 130)
+		return;
 	if (data->cmd)
 		run_execution(data);
 }
@@ -78,6 +84,8 @@ int main(int argc, char **argv, char **envp)
 		if (data.user_input[0])
 			add_history(data.user_input);
 		run_line(&data);
+		if (g_exit_status == 130)
+			g_exit_status = 1;
 		reset_state(&data);
 	}
 	cleanup_data(&data);

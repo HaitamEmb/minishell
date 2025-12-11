@@ -5,6 +5,7 @@
 #define CHILD 1
 #define PARENT 0
 #define SHELL_NAME "minishell"
+#define HEREDOC_NAME "/tmp/.heredoc_"
 
 /*-------------Includes--------------*/
 #include <sys/types.h>
@@ -153,7 +154,7 @@ int var_len(char *str);
 bool is_var_valid(char c);
 int replace_var(t_token **token, char *var_value, int index);
 char *replace_herdoc_var(char *str, char *var_val, int index);
-char create_token_string(char *old_str, char *var_val, int n_size, int index);
+char *create_token_string(char *old_str, char *var_val, int n_size, int index);
 void copy_to_new_str(char *n_str, char *var_val, int *j);
 
 /*HANDLE QUOTES*/
@@ -180,6 +181,7 @@ char *join_vars(t_token **token);
 t_command *lst_new_cmd(bool pipe_out);
 void lst_add_back_cmd(t_command **head, t_command *new_cmd);
 t_command *lst_last_cmd(t_command *cmd);
+void init_io(t_command *cmd);
 void clear_cmd_list(t_command **head);
 t_command lst_first_cmd(t_command *cmd); //DEPRECATED
 
@@ -206,12 +208,14 @@ int ft_isnum(int c);
 int is_numeric_str(const char *str);
 char *ft_substr(char const *s, unsigned int start, size_t len);
 char *ft_strjoin(char const *s1, char const *s2);
+char *ft_strtrim(char const *s1, char const *set);
 char **ft_split(char const *s, char c);
 char *ft_itoa(int n);
 void *ft_calloc(size_t count, size_t size);
 char *ft_strchr(const char *s, int c);
 void free_ptr(void *ptr);
 void free_str_tab(char **tab);
+void ft_putendl_fd(char *s, int fd);
 
 char **dup_env(char **envp);
 char *ms_getenv(t_data *data, const char *name);

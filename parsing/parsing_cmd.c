@@ -34,7 +34,7 @@ static void var_to_command(t_command *last_cmd, char *cmd_str)
 		lst_add_prev(&n_token, lst_new_token(ft_strdup(arr_str[i]), NULL, WORD, DEFAULT));
 	lst_add_prev(&n_token, lst_new_token(NULL, NULL, END, DEFAULT));
 	fill_args(&n_token, last_cmd);
-	lst_deltoken(&tmp, &free_ptr); // add free_ptr func
+	lst_deltoken(tmp, free_ptr);
 	free_str_tab(arr_str);
 }
 

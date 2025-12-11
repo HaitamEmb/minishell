@@ -39,7 +39,7 @@ void create_cmd(t_data *data, t_token *token)
 		else if (tmp->type == INPUT)
 			parse_input(&data->cmd, &tmp);
 		else if (tmp->type == OUTPUT)
-			parse_output(&data->cmd, &tmp);
+			parse_trunc(&data->cmd, &tmp);
 		else if (tmp->type == HEREDOC)
 			parse_heredoc(data, &data->cmd, &tmp);
 		else if (tmp->type == APPEND)
@@ -49,4 +49,5 @@ void create_cmd(t_data *data, t_token *token)
 		else if (tmp->type == END)
 			break;
 	}
+	cmds_with_no_args(data);
 }

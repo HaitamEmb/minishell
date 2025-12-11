@@ -15,7 +15,7 @@ static bool change_status_default(t_token **token, int *i)
 
 static bool quote_default(t_token **token, int i)
 {
-	if ((*token)->str[i] == '\'' || (*token)->str[i] == '\"' && (*token)->status == DEFAULT)
+	if (((*token)->str[i] == '\'' || (*token)->str[i] == '\"') && (*token)->status == DEFAULT)
 		return (true);
 	else
 		return (false);

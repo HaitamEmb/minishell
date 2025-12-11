@@ -25,12 +25,12 @@ int is_invalid_ops(t_token **token)
 		if (successive_ops(tmp) == true)
 		{
 			if (tmp->type == END && tmp->prev && tmp->prev->type > PIPE)
-				// errmsg
-				else if (tmp->type == END && tmp->prev)
-					// errmsg
-					else
-					// errmsg
-					return (FAILURE);
+				errmsg("syntax error", "unexpected token 'newline'", 1);
+			else if (tmp->type == PIPE && tmp->prev && tmp->prev->type == PIPE)
+				errmsg("syntax error", "unexpected token '|'", 1);
+			else
+				errmsg("syntax error", "unexpected token", 1);
+			return (FAILURE);
 		}
 		tmp = tmp->next;
 	}

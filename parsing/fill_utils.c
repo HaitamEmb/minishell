@@ -49,7 +49,7 @@ char *join_vars(t_token **token)
 
 	tmp = *token;
 	str = ft_strdup(tmp->str);
-	while (tmp->type == VAR && tmp->next->type == VAR && tmp->next->join == true)
+	while (tmp->type == VAR && tmp->next->type == VAR && tmp->next->to_join == true)
 	{
 		str = ft_strjoin(str, tmp->next->str);
 		tmp = tmp->next;

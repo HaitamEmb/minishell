@@ -11,12 +11,14 @@ static char *get_env_var(t_data *data, char *var)
 	len = ft_strlen(var);
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], var, len) == 0)
-			break;
+		if (ft_strncmp(data->env[i], var, len) == 0 && data->env[i][len] == '=')
+		{
+			str = ft_strdup(data->env[i] + len + 1);
+			return (str);
+		}
 		i++;
 	}
-	str = ft_strdup(data->env[i] + len);
-	return (str);
+	return (NULL);
 }
 
 static int var_exists(t_data *data, char *var)
@@ -28,11 +30,11 @@ static int var_exists(t_data *data, char *var)
 	len = ft_strlen(var);
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], var, len) == 0)
+		if (ft_strncmp(data->env[i], var, len) == 0 && data->env[i][len] == '=')
 			return (0);
 		i++;
 	}
-	return (i);
+	return (1);
 }
 
 char *recover_val(t_token *token, char *str, t_data *data)
@@ -48,7 +50,7 @@ char *recover_val(t_token *token, char *str, t_data *data)
 		value = get_env_var(data, var);
 	}
 	else if (var && var[0] == '?' && var[1] == '=')
-		value = ft_itoa(exit_code); // to fix
+		value = ft_itoa(g_exit_status);
 	else
 		value = NULL;
 	free_ptr(var); // to add

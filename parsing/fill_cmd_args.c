@@ -46,7 +46,7 @@ static char **copy_default_in_tab(int len, char **n_tab, t_command *last_cmd, t_
 	t_token *tmp;
 
 	i = 0;
-	tmp = token;
+	tmp = *token;
 	while (i < len)
 	{
 		n_tab[i] = last_cmd->args[i];

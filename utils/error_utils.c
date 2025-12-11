@@ -6,7 +6,14 @@ void	exit_minishell(t_data *data, int exitno)
 	{
 		if (data->cmd && data->cmd->inout_fds)
 			close_command_fds(data->cmd);
-		free_data(data);
+		if (data->token)
+			lst_clear(&data->token, free_ptr);
+		if (data->cmd)
+			clear_cmd_list(&data->cmd);
+		free_str_tab(data->env);
+		free_ptr(data->work_dir);
+		free_ptr(data->old_work_dir);
+		free_ptr(data->user_input);
 	}
 	exit(exitno);
 }

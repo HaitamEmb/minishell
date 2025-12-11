@@ -25,6 +25,12 @@ SRCS		= \
 	parsing/token_utils.c \
 	parsing/var_id.c \
 	parsing/cmd_lst_utils.c \
+	parsing/parse_pipe.c \
+	parsing/parse_input.c \
+	parsing/parse_trunc.c \
+	parsing/parse_append.c \
+	parsing/parse_heredoc.c \
+	parsing/fill_heredoc.c \
 	execution/builtins_basic.c \
 	execution/builtin_cd.c \
 	execution/builtin_export.c \
@@ -52,7 +58,10 @@ SRCS		= \
 	utils/ft_strncmp.c \
 	utils/ft_substr.c \
 	utils/ft_strdup.c \
-	utils/free_utils.c
+	utils/ft_strtrim.c \
+	utils/free_utils.c \
+	utils/error_utils.c \
+	utils/ft_putendl_fd.c
 
 OBJS		= $(SRCS:.c=.o)
 

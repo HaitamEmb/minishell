@@ -23,12 +23,11 @@ int create_token(char *str, t_data *data)
 	}
 	if (status != DEFAULT)
 	{
-		if (status = DOUBLE)
-			// errmsg
+		if (status == DOUBLE)
+			errmsg("syntax error", "unclosed double quote", 1);
 		else if (status == SINGLE)
-				// errmsg
-				// errmsg
-		return (1);
+			errmsg("syntax error", "unclosed single quote", 1);
+		return (FAILURE);
 	}
-	return (0);
+	return (SUCCESS);
 }

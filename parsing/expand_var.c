@@ -55,7 +55,7 @@ int expand_variables(t_data *data, t_token **token)
 		}
 		tmp = tmp->next;
 	}
-	return (0);
+	return (SUCCESS);
 }
 
 char *expand_var_heredoc(t_data *data, char *str)
@@ -66,7 +66,7 @@ char *expand_var_heredoc(t_data *data, char *str)
 	while (str[i])
 	{
 		if (str[i] == '$' && is_next_cmd(str[i + 1]) == false && quoted_var(str, i) == false)
-			str = replace_heredoc_var(str, recover_val(NULL, str + i, data), i);
+			str = replace_herdoc_var(str, recover_val(NULL, str + i, data), i);
 		else
 			i++;
 	}

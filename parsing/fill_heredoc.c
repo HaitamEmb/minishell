@@ -8,6 +8,7 @@ static	char *arr_to_str(char **arr)
 	char *tmp;
 	int	i;
 
+	str = NULL;
 	i = -1;
 	while (arr[++i])
 	{
@@ -33,8 +34,10 @@ static	char *arr_to_str(char **arr)
 static	char *var_line_expand(t_data *data, char *line)
 {
 	char	**words;
+	char	*tmp;
 	int	i;
 
+	i = 0;
 	words = ft_split(line, ' ');
 	if (!words)
 		return (NULL);
@@ -42,9 +45,14 @@ static	char *var_line_expand(t_data *data, char *line)
 	{
 		if (ft_strchr(words[i], '$'))
 		{
+			tmp = words[i];
 			words[i] = expand_var_heredoc(data, words[i]);
+			free_ptr(tmp);
 			if (!words[i])
+			{
+				free_str_tab(words);
 				return (NULL);
+			}
 		}
 		i++;
 	}
@@ -53,10 +61,11 @@ static	char *var_line_expand(t_data *data, char *line)
 
 static bool eval_heredoc(t_data *data, char **line, t_inout_fds *io, bool *ret)
 {
+	char	*tmp;
+
 	if (*line == NULL)
 	{
-		errmsg_cmd("");
-		*ret = true;
+		*ret = false;
 		return (false);
 	}
 	if (ft_strcmp(*line, io->heredoc_del) == 0)
@@ -66,11 +75,13 @@ static bool eval_heredoc(t_data *data, char **line, t_inout_fds *io, bool *ret)
 	}
 	if (io->heredoc_quotes == false && ft_strchr(*line, '$'))
 	{
+		tmp = *line;
 		*line = var_line_expand(data, *line);
+		free_ptr(tmp);
 		if (!(*line))
 		{
-			free_ptr(*line);
 			*ret = false;
+			*line = NULL;
 			return (false);
 		}
 	}
@@ -84,16 +95,27 @@ bool	fill_heredoc(t_data *data, t_inout_fds *io, int fd)
 
 	ret = false;
 	line = NULL;
+	setup_heredoc_signals();
 	while (1)
 	{
-		setup_signals(); //interactive
-		line = readline(">");
-		setup_signals(); // non-interactive
+		line = readline("> ");
+		if (!line)
+		{
+			if (g_exit_status == 130)
+			{
+				ret = false;
+				break;
+			}
+			errmsg("warning", "here-document delimited by end-of-file", 0);
+			ret = true;
+			break;
+		}
 		if (!eval_heredoc(data, &line, io, &ret))
-			break ;
-		ft_putendl_fd(line, fd); //to add
+			break;
+		ft_putendl_fd(line, fd);
 		free_ptr(line);
 	}
 	free_ptr(line);
+	setup_signals();
 	return (ret);
 }

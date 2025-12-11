@@ -14,14 +14,20 @@ bool	remove_old_file_ref(t_inout_fds *io, bool infile)
 			unlink(io->infile);
 		}
 		free_ptr(io->infile);
-		close(io->fd_in);
+		io->infile = NULL;
+		if (io->fd_in >= 0)
+			close(io->fd_in);
+		io->fd_in = -1;
 	}
 	else if (infile == false && io->outfile)
 	{
 		if (io->fd_out == -1 || (io->infile && io->fd_in == -1))
 			return (false);
 		free_ptr(io->outfile);
-		close(io->fd_out);
+		io->outfile = NULL;
+		if (io->fd_out >= 0)
+			close(io->fd_out);
+		io->fd_out = -1;
 	}
 	return (true);
 }

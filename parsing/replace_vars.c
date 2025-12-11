@@ -71,16 +71,32 @@ int replace_var(t_token **token, char *var_value, int index)
 char *replace_herdoc_var(char *str, char *var_val, int index)
 {
 	char *tmp;
+	char *new_str;
+	int var_name_len;
+	int i, j;
 
-	tmp = NULL;
 	if (var_val == NULL)
-		*str = '\0';
-	else
 	{
-		tmp = str;
-		str = del_replace(NULL, str, var_val, index);
-		free_ptr(tmp);
+		var_name_len = var_len(str + index);
+		new_str = malloc(ft_strlen(str) - var_name_len);
+		if (!new_str)
+			return (str);
+		i = 0;
+		j = 0;
+		while (str[i])
+		{
+			if (i == index)
+				i += var_name_len + 1;
+			if (str[i])
+				new_str[j++] = str[i++];
+		}
+		new_str[j] = '\0';
+		free_ptr(str);
+		return (new_str);
 	}
+	tmp = str;
+	str = del_replace(NULL, str, var_val, index);
+	free_ptr(tmp);
 	free_ptr(var_val);
 	return (str);
 }

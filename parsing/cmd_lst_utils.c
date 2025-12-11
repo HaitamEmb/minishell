@@ -64,6 +64,14 @@ t_command *lst_last_cmd(t_command *cmd)
 	return (cmd);
 }
 
+void init_io(t_command *cmd)
+{
+	if (!cmd)
+		return;
+	if (!cmd->inout_fds)
+		cmd->inout_fds = new_inout();
+}
+
 void clear_cmd_list(t_command **head)
 {
 	t_command *tmp;
@@ -84,6 +92,12 @@ void clear_cmd_list(t_command **head)
 		free_str_tab((*head)->args);
 		if ((*head)->inout_fds)
 		{
+			if ((*head)->inout_fds->fd_in >= 0 && (*head)->inout_fds->fd_in != STDIN_FILENO)
+				close((*head)->inout_fds->fd_in);
+			if ((*head)->inout_fds->fd_out >= 0 && (*head)->inout_fds->fd_out != STDOUT_FILENO)
+				close((*head)->inout_fds->fd_out);
+			if ((*head)->inout_fds->infile && (*head)->inout_fds->heredoc_del)
+				unlink((*head)->inout_fds->infile);
 			free_ptr((*head)->inout_fds->infile);
 			free_ptr((*head)->inout_fds->outfile);
 			free_ptr((*head)->inout_fds->heredoc_del);

@@ -44,6 +44,7 @@ void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
 	t_token	*tmp;
 	t_command *cmd;
 	t_inout_fds *io;
+	bool	success;
 
 	tmp = *token_lst;
 	cmd = lst_last_cmd(*last_cmd);
@@ -52,11 +53,24 @@ void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
 	if (!remove_old_file_ref(io, true))
 		return ;
 	io->infile = get_heredoc_name();
+	if (!io->infile)
+		return;
 	io->heredoc_del = get_delim(tmp->next->str, &(io->heredoc_quotes));
-	if (get_heredoc(data, io))
+	if (!io->heredoc_del)
+	{
+		free_ptr(io->infile);
+		io->infile = NULL;
+		return;
+	}
+	success = get_heredoc(data, io);
+	if (success && g_exit_status != 130)
 		io->fd_in = open(io->infile, O_RDONLY);
 	else
+	{
 		io->fd_in = -1;
+		if (g_exit_status == 130)
+			unlink(io->infile);
+	}
 	if (tmp->next->next)
 		tmp = tmp->next->next;
 	else

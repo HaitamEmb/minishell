@@ -23,15 +23,17 @@ int is_var(t_token **lst_token)
 	t_token *tmp;
 
 	tmp = *lst_token;
+	if (!tmp)
+		return (SUCCESS);
 	if (tmp->type == PIPE)
 	{
-		// errmsg()
+		errmsg("syntax error", "unexpected token '|'", 1);
 		return (FAILURE);
 	}
 	while (tmp)
 	{
 		check_var(&tmp);
-		if (is_invalid_ops(&tmp) == FAILURE) // create later
+		if (is_invalid_ops(&tmp) == FAILURE)
 			return (FAILURE);
 		tmp = tmp->next;
 	}
