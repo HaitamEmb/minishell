@@ -69,7 +69,7 @@ int	builtin_cd(t_data *data, t_command *cmd)
 	char	oldpwd[PATH_MAX];
 
 	if (!data || !cmd)
-		return (FAILURE);
+		return (1);
 	if (!getcwd(oldpwd, PATH_MAX))
 		oldpwd[0] = '\0';
 	target = get_target(data, cmd);

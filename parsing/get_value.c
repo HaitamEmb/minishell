@@ -11,9 +11,9 @@ static char *get_env_var(t_data *data, char *var)
 	len = ft_strlen(var);
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], var, len) == 0 && data->env[i][len] == '=')
+		if (ft_strncmp(data->env[i], var, len) == 0)
 		{
-			str = ft_strdup(data->env[i] + len + 1);
+			str = ft_strdup(data->env[i] + len);
 			return (str);
 		}
 		i++;
@@ -30,7 +30,7 @@ static int var_exists(t_data *data, char *var)
 	len = ft_strlen(var);
 	while (data->env[i])
 	{
-		if (ft_strncmp(data->env[i], var, len) == 0 && data->env[i][len] == '=')
+		if (ft_strncmp(data->env[i], var, len) == 0)
 			return (0);
 		i++;
 	}

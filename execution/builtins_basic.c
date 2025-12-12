@@ -32,7 +32,7 @@ int	builtin_echo(t_command *cmd)
 	int	suppress_newline;
 
 	if (!cmd || !cmd->args)
-		return (SUCCESS);
+		return (0);
 	i = 1;
 	suppress_newline = 0;
 	while (cmd->args[i] && echo_has_only_n(cmd->args[i]))
@@ -49,7 +49,7 @@ int	builtin_echo(t_command *cmd)
 	}
 	if (!suppress_newline)
 		write(STDOUT_FILENO, "\n", 1);
-	return (SUCCESS);
+	return (0);
 }
 
 int	builtin_pwd(void)
@@ -61,11 +61,11 @@ int	builtin_pwd(void)
 	if (!cwd)
 	{
 		perror("pwd");
-		return (FAILURE);
+		return (1);
 	}
 	write(STDOUT_FILENO, cwd, ft_strlen(cwd));
 	write(STDOUT_FILENO, "\n", 1);
-	return (SUCCESS);
+	return (0);
 }
 
 int	builtin_env(t_data *data)
@@ -73,7 +73,7 @@ int	builtin_env(t_data *data)
 	int	i;
 
 	if (!data || !data->env)
-		return (SUCCESS);
+		return (0);
 	i = 0;
 	while (data->env[i])
 	{
@@ -84,5 +84,5 @@ int	builtin_env(t_data *data)
 		}
 		i++;
 	}
-	return (SUCCESS);
+	return (0);
 }

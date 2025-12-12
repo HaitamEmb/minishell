@@ -61,14 +61,26 @@ int expand_variables(t_data *data, t_token **token)
 char *expand_var_heredoc(t_data *data, char *str)
 {
 	int i;
+	char *result;
+	int expanded;
 
+	expanded = 0;
+	result = ft_strdup(str);
+	if (!result)
+		return (str);
 	i = 0;
-	while (str[i])
+	while (result[i])
 	{
-		if (str[i] == '$' && is_next_cmd(str[i + 1]) == false && quoted_var(str, i) == false)
-			str = replace_herdoc_var(str, recover_val(NULL, str + i, data), i);
+		if (result[i] == '$' && is_next_cmd(result[i + 1]) == false
+			&& quoted_var(result, i) == false)
+		{
+			result = replace_herdoc_var(result, recover_val(NULL, result + i, data), i);
+			expanded = 1;
+		}
 		else
 			i++;
 	}
-	return (str);
+	if (!expanded)
+		return (result);
+	return (result);
 }
