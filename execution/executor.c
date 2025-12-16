@@ -41,7 +41,12 @@ static int	execute_single_builtin(t_data *data, t_command *cmd)
 {
 	int	status;
 
-	if (prepare_heredoc(data, cmd) == FAILURE || open_redirections(cmd) == FAILURE)
+	if (prepare_heredoc(data, cmd) == FAILURE)
+	{
+		g_exit_status = 1;
+		return (FAILURE);
+	}
+	if (open_redirections(cmd) == FAILURE)
 	{
 		g_exit_status = 1;
 		return (FAILURE);

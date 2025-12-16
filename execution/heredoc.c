@@ -86,3 +86,21 @@ int	build_heredoc(t_data *data, t_inout_fds *io)
 	io->fd_in = pipe_fd[0];
 	return (SUCCESS);
 }
+
+int	prepare_heredoc(t_data *data, t_command *cmd)
+{
+	t_inout_fds	*io;
+
+	(void)data;
+	if (!cmd)
+		return (SUCCESS);
+	io = cmd->inout_fds;
+	if (!io)
+		return (SUCCESS);
+	if (io->heredoc_del)
+	{
+		if (build_heredoc(data, io) == FAILURE)
+			return (FAILURE);
+	}
+	return (SUCCESS);
+}

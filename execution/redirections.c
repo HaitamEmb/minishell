@@ -54,24 +54,6 @@ static int	open_output(t_inout_fds *io)
 	return (SUCCESS);
 }
 
-int	prepare_heredoc(t_data *data, t_command *cmd)
-{
-	t_inout_fds	*io;
-
-	(void)data;
-	if (!cmd)
-		return (SUCCESS);
-	io = cmd->inout_fds;
-	if (!io)
-		return (SUCCESS);
-	if (io->heredoc_del)
-	{
-		if (build_heredoc(data, io) == FAILURE)
-			return (FAILURE);
-	}
-	return (SUCCESS);
-}
-
 int	open_redirections(t_command *cmd)
 {
 	t_inout_fds	*io;

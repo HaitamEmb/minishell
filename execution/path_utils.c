@@ -44,6 +44,19 @@ static char	*search_in_path(char **paths, const char *cmd)
 	return (NULL);
 }
 
+static char	*check_direct_path(char *command)
+{
+	if (access(command, F_OK) == 0)
+	{
+		if (access(command, X_OK) == 0)
+			return (ft_strdup(command));
+		errno = EACCES;
+		return (NULL);
+	}
+	errno = ENOENT;
+	return (NULL);
+}
+
 char	*resolve_command_path(t_data *data, t_command *cmd)
 {
 	char	*path_value;
@@ -53,17 +66,7 @@ char	*resolve_command_path(t_data *data, t_command *cmd)
 	if (!cmd || !cmd->command || cmd->command[0] == '\0')
 		return (NULL);
 	if (ft_strchr(cmd->command, '/'))
-	{
-		if (access(cmd->command, F_OK) == 0)
-		{
-			if (access(cmd->command, X_OK) == 0)
-				return (ft_strdup(cmd->command));
-			errno = EACCES;
-			return (NULL);
-		}
-		errno = ENOENT;
-		return (NULL);
-	}
+		return (check_direct_path(cmd->command));
 	path_value = ms_getenv(data, "PATH");
 	if (!path_value)
 		return (NULL);
