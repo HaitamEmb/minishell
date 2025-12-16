@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parse_trunc.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:18 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:18 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//we handle the > operator
 #include "../minishell.h"
 
 char	*get_relative_path(char *file)
@@ -19,14 +18,14 @@ char	*get_relative_path(char *file)
 	char	*ret;
 
 	if (file[0] == '/')
-		return(ft_strdup(file));
+		return (ft_strdup(file));
 	path = ft_strdup("./");
 	ret = ft_strjoin(path, file);
 	printf("Parsing, relative path is : %s\n", ret);
 	return (ret);
 }
 
-static	void open_outfile(t_inout_fds *io, char *file, char *filename)
+static void	open_outfile(t_inout_fds *io, char *file, char *filename)
 {
 	if (!remove_old_file_ref(io, false))
 		return ;
@@ -43,12 +42,12 @@ static	void open_outfile(t_inout_fds *io, char *file, char *filename)
 
 void	parse_trunc(t_command **last_cmd, t_token **token_lst)
 {
-	t_token	*tmp;
+	t_token		*tmp;
 	t_command	*cmd;
 
 	tmp = *token_lst;
 	cmd = lst_last_cmd(*last_cmd);
-	init_io(cmd); //add init_io;
+	init_io(cmd);
 	open_outfile(cmd->inout_fds, tmp->next->str, tmp->next->str_back);
 	if (tmp->next->next)
 		tmp = tmp->next->next;

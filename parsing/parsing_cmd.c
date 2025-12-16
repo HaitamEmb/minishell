@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_cmd.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:22 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:22 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static bool str_has_space(char *str)
+static bool	str_has_space(char *str)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (str[i])
@@ -26,43 +26,45 @@ static bool str_has_space(char *str)
 	return (false);
 }
 
-static void var_to_command(t_command *last_cmd, char *cmd_str)
+static void	var_to_command(t_command *last_cmd, char *cmd_str)
 {
-	t_token *n_token;
-	t_token *tmp;
-	char **arr_str;
-	int i;
+	t_token	*n_token;
+	t_token	*tmp;
+	char	**arr_str;
+	int		i;
 
 	n_token = NULL;
 	arr_str = ft_split(cmd_str, ' ');
 	if (!arr_str)
-		return;
+		return ;
 	last_cmd->command = ft_strdup(arr_str[0]);
 	if (arr_str[1])
 		n_token = lst_new_token(ft_strdup(arr_str[1]), NULL, WORD, DEFAULT);
 	tmp = n_token;
 	i = 1;
 	while (arr_str[++i])
-		lst_add_prev(&n_token, lst_new_token(ft_strdup(arr_str[i]), NULL, WORD, DEFAULT));
+		lst_add_prev(&n_token, lst_new_token(ft_strdup(arr_str[i]), NULL,
+				WORD, DEFAULT));
 	lst_add_prev(&n_token, lst_new_token(NULL, NULL, END, DEFAULT));
 	fill_args(&n_token, last_cmd);
 	lst_deltoken(tmp, free_ptr);
 	free_str_tab(arr_str);
 }
 
-void parse_word(t_command **cmd, t_token **token)
+void	parse_word(t_command **cmd, t_token **token)
 {
-	t_token *tmp;
-	t_command *last_cmd;
+	t_token		*tmp;
+	t_command	*last_cmd;
 
 	tmp = *token;
 	while (tmp->type == WORD || tmp->type == VAR)
 	{
-		last_cmd = lst_last_cmd(*cmd); // function to add cmd to the end of list
-		if (tmp->prev == NULL || (tmp->prev && tmp->prev->type == PIPE) || last_cmd->command == NULL)
+		last_cmd = lst_last_cmd(*cmd);
+		if (tmp->prev == NULL || (tmp->prev && tmp->prev->type == PIPE)
+			|| last_cmd->command == NULL)
 		{
 			if (tmp->type == VAR && str_has_space(tmp->str))
-				var_to_command(last_cmd, tmp->str); // splits vars to commands
+				var_to_command(last_cmd, tmp->str);
 			else
 				last_cmd->command = ft_strdup(tmp->str);
 			tmp = tmp->next;

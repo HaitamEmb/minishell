@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parse_heredoc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:04 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:04 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 bool	get_heredoc(t_data *data, t_inout_fds *io)
 {
-	int	tmp_fd;
+	int		tmp_fd;
 	bool	ret;
 
 	ret = true;
@@ -24,26 +24,28 @@ bool	get_heredoc(t_data *data, t_inout_fds *io)
 	return (ret);
 }
 
-static char *get_heredoc_name(void)
+static char	*get_heredoc_name(void)
 {
-	static int i;
-	char *name;
-	char *number;
+	static int	i;
+	char		*name;
+	char		*number;
 
 	number = ft_itoa(i);
 	if (!number)
 		return (NULL);
-	name = ft_strjoin(HEREDOC_NAME, number); //tocheck
+	name = ft_strjoin(HEREDOC_NAME, number);
 	free(number);
 	i++;
 	return (name);
 }
 
-static char *get_delim(char *delim, bool *quotes)
+static char	*get_delim(char *delim, bool *quotes)
 {
-	int len;
+	int	len;
+
 	len = ft_strlen(delim) - 1;
-	if ((delim[0] == '\"' && delim[len] == '\"') || (delim[0] == '\'' && delim[len] == '\''))
+	if ((delim[0] == '\"' && delim[len] == '\"') || (delim[0] == '\''
+			&& delim[len] == '\''))
 	{
 		*quotes = true;
 		return (ft_strtrim(delim, "\'\""));
@@ -53,10 +55,10 @@ static char *get_delim(char *delim, bool *quotes)
 
 void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
 {
-	t_token	*tmp;
-	t_command *cmd;
-	t_inout_fds *io;
-	bool	success;
+	t_token		*tmp;
+	t_command	*cmd;
+	t_inout_fds	*io;
+	bool		success;
 
 	tmp = *token_lst;
 	cmd = lst_last_cmd(*last_cmd);
@@ -66,13 +68,13 @@ void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
 		return ;
 	io->infile = get_heredoc_name();
 	if (!io->infile)
-		return;
+		return ;
 	io->heredoc_del = get_delim(tmp->next->str, &(io->heredoc_quotes));
 	if (!io->heredoc_del)
 	{
 		free_ptr(io->infile);
 		io->infile = NULL;
-		return;
+		return ;
 	}
 	success = get_heredoc(data, io);
 	if (success && g_exit_status != 130)

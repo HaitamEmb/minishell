@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   is_invalid_ops.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:54 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:59:54 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// checks for invalid operators format, for example double || or triple redirect >>>
 #include "minishell.h"
 
-static bool successive_ops(t_token *token)
+static bool	successive_ops(t_token *token)
 {
 	if (token->prev)
 	{
@@ -27,9 +26,9 @@ static bool successive_ops(t_token *token)
 	return (false);
 }
 
-int is_invalid_ops(t_token **token)
+int	is_invalid_ops(t_token **token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = *token;
 	while (tmp)

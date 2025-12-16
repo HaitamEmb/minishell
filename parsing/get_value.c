@@ -3,21 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   get_value.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:43 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:59:43 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-// recover values, we search var if exists from set envs or shell state and return it
 
-static char *get_env_var(t_data *data, char *var)
+static char	*get_env_var(t_data *data, char *var)
 {
-	char *str;
-	int i;
-	int len;
+	char	*str;
+	int		i;
+	int		len;
 
 	i = 0;
 	len = ft_strlen(var);
@@ -33,10 +32,10 @@ static char *get_env_var(t_data *data, char *var)
 	return (NULL);
 }
 
-static int var_exists(t_data *data, char *var)
+static int	var_exists(t_data *data, char *var)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	i = 0;
 	len = ft_strlen(var);
@@ -49,10 +48,10 @@ static int var_exists(t_data *data, char *var)
 	return (1);
 }
 
-char *recover_val(t_token *token, char *str, t_data *data)
+char	*recover_val(t_token *token, char *str, t_data *data)
 {
-	char *value;
-	char *var;
+	char	*value;
+	char	*var;
 
 	var = var_id(str);
 	if (var && var_exists(data, var) == 0)
@@ -65,6 +64,6 @@ char *recover_val(t_token *token, char *str, t_data *data)
 		value = ft_itoa(g_exit_status);
 	else
 		value = NULL;
-	free_ptr(var); // to add
+	free_ptr(var);
 	return (value);
 }

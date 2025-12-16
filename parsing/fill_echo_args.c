@@ -3,20 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   fill_echo_args.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:33 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:59:33 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// when command is echo
-
-int args_len_echo(t_token *tmp)
+int	args_len_echo(t_token *tmp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tmp && (tmp->type == WORD || tmp->type == VAR))
@@ -36,11 +34,11 @@ int args_len_echo(t_token *tmp)
 	return (i);
 }
 
-int create_args_echo(t_token **token, t_command *last_cmd)
+int	create_args_echo(t_token **token, t_command *last_cmd)
 {
-	int nb_args;
-	t_token *tmp;
-	int i;
+	int		nb_args;
+	t_token	*tmp;
+	int		i;
 
 	del_empty_args(token);
 	tmp = *token;
@@ -65,14 +63,14 @@ int create_args_echo(t_token **token, t_command *last_cmd)
 	return (SUCCESS);
 }
 
-int add_args_echo(t_token **token, t_command *last_cmd)
+int	add_args_echo(t_token **token, t_command *last_cmd)
 {
-	int len;
-	int nb_args;
-	char **n_tab;
-	t_token *tmp;
+	int		len;
+	int		nb_args;
+	char	**n_tab;
+	t_token	*tmp;
 
-	del_empty_args(token); // delete var empty
+	del_empty_args(token);
 	tmp = *token;
 	nb_args = args_len_echo(tmp);
 	len = 0;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand_var_utils.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:20 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:59:20 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ void	copy_to_new_str(char *n_str, char *var_val, int *j)
 	}
 }
 
-char	*create_token_string(char *old_str, char *var_val, int n_size, int index)
+char	*create_token_string(char *old_str, char *var_val, int n_size, int idx)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 	char	*n_str;
 
 	i = 0;
@@ -38,13 +38,13 @@ char	*create_token_string(char *old_str, char *var_val, int n_size, int index)
 		return (NULL);
 	while (old_str[i])
 	{
-		if (old_str[i] == '$' && i == index)
+		if (old_str[i] == '$' && i == idx)
 		{
 			copy_to_new_str(n_str, var_val, &j);
-			i = i + var_len(old_str + index) + 1;
+			i = i + var_len(old_str + idx) + 1;
 			if (old_str[i] == '\0')
-				break;
-		} 
+				break ;
+		}
 		n_str[j++] = old_str[i++];
 	}
 	n_str[j] = '\0';

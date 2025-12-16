@@ -3,16 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   token_lst2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:36 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:36 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-//insert in between and link the new list with prev and next to make it double linked
 
 static void	double_link(t_token *to_del, t_token *tmp, t_token *insert)
 {
@@ -26,7 +24,7 @@ static void	double_link(t_token *to_del, t_token *tmp, t_token *insert)
 	insert->next = tmp->next;
 }
 
-t_token *lst_insert_between(t_token **head, t_token *to_del, t_token *insert)
+t_token	*lst_insert_between(t_token **head, t_token *to_del, t_token *insert)
 {
 	t_token	*tmp;
 

@@ -3,22 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   fill_heredoc.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:36 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:59:36 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-//to check
-
-static	char *arr_to_str(char **arr)
+static char	*arr_to_str(char **arr)
 {
-	char *str;
-	char *tmp;
-	int	i;
+	char	*str;
+	char	*tmp;
+	int		i;
 
 	str = NULL;
 	i = -1;
@@ -43,11 +41,11 @@ static	char *arr_to_str(char **arr)
 	return (str);
 }
 
-static	char *var_line_expand(t_data *data, char *line)
+static char	*var_line_expand(t_data *data, char *line)
 {
 	char	**words;
 	char	*tmp;
-	int	i;
+	int		i;
 
 	i = 0;
 	words = ft_split(line, ' ');
@@ -71,7 +69,7 @@ static	char *var_line_expand(t_data *data, char *line)
 	return (arr_to_str(words));
 }
 
-static bool eval_heredoc(t_data *data, char **line, t_inout_fds *io, bool *ret)
+static bool	eval_heredoc(t_data *data, char **line, t_inout_fds *io, bool *ret)
 {
 	char	*tmp;
 
@@ -116,14 +114,14 @@ bool	fill_heredoc(t_data *data, t_inout_fds *io, int fd)
 			if (g_exit_status == 130)
 			{
 				ret = false;
-				break;
+				break ;
 			}
 			errmsg("warning", "here-document delimited by end-of-file", 0);
 			ret = true;
-			break;
+			break ;
 		}
 		if (!eval_heredoc(data, &line, io, &ret))
-			break;
+			break ;
 		ft_putendl_fd(line, fd);
 		free_ptr(line);
 	}

@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   remove_quotes.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:25 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:25 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-// remove quotes while respecting quoting rules
 
-static bool change_status_default(t_token **token, int *i)
+static bool	change_status_default(t_token **token, int *i)
 {
-	if (((*token)->str[*i] == '\'' && (*token)->status == SINGLE) || ((*token)->str[*i] == '\"' && (*token)->status == DOUBLE))
+	if (((*token)->str[*i] == '\'' && (*token)->status == SINGLE)
+		|| ((*token)->str[*i] == '\"' && (*token)->status == DOUBLE))
 	{
 		(*token)->status = DEFAULT;
 		(*i)++;
@@ -25,15 +25,16 @@ static bool change_status_default(t_token **token, int *i)
 		return (false);
 }
 
-static bool quote_default(t_token **token, int i)
+static bool	quote_default(t_token **token, int i)
 {
-	if (((*token)->str[i] == '\'' || (*token)->str[i] == '\"') && (*token)->status == DEFAULT)
+	if (((*token)->str[i] == '\'' || (*token)->str[i] == '\"')
+		&& (*token)->status == DEFAULT)
 		return (true);
 	else
 		return (false);
 }
 
-static void change_status_quote(t_token **token, int *i)
+static void	change_status_quote(t_token **token, int *i)
 {
 	if ((*token)->str[*i] == '\'')
 		(*token)->status = SINGLE;
@@ -42,11 +43,11 @@ static void change_status_quote(t_token **token, int *i)
 	(*i)++;
 }
 
-int remove_quotes(t_token **token)
+int	remove_quotes(t_token **token)
 {
-	char *line;
-	int i;
-	int j;
+	char	*line;
+	int		i;
+	int		j;
 
 	i = 0;
 	j = 0;
@@ -58,10 +59,10 @@ int remove_quotes(t_token **token)
 		if (quote_default(token, i) == true)
 		{
 			change_status_quote(token, &i);
-			continue;
+			continue ;
 		}
 		else if (change_status_default(token, &i) == true)
-			continue;
+			continue ;
 		line[j++] = (*token)->str[i++];
 	}
 	line[j] = '\0';

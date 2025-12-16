@@ -3,14 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   parse_input.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:09 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:09 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//we handle < redir_in
 #include "../minishell.h"
 
 bool	remove_old_file_ref(t_inout_fds *io, bool infile)
@@ -44,7 +43,7 @@ bool	remove_old_file_ref(t_inout_fds *io, bool infile)
 	return (true);
 }
 
-static	void open_file(t_inout_fds *io, char *file, char *original_file)
+static void	open_file(t_inout_fds *io, char *file, char *original_file)
 {
 	if (!remove_old_file_ref(io, true))
 		return ;
@@ -61,7 +60,7 @@ static	void open_file(t_inout_fds *io, char *file, char *original_file)
 
 void	parse_input(t_command **last_cmd, t_token **token_lst)
 {
-	t_token	*tmp;
+	t_token		*tmp;
 	t_command	*cmd;
 
 	tmp = *token_lst;

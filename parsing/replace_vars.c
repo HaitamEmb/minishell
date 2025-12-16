@@ -3,23 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   replace_vars.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:29 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:29 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// take a token that has variable and either delete it if has no value, or replace with its actual value
-
-static int del_var(t_token **token, char *str, int index)
+static int	del_var(t_token **token, char *str, int index)
 {
-	int i;
-	int j;
-	int len;
-	char *n_str;
+	int		i;
+	int		j;
+	int		len;
+	char	*n_str;
 
 	i = 0;
 	j = 0;
@@ -33,7 +31,7 @@ static int del_var(t_token **token, char *str, int index)
 		{
 			i = i + var_len(str + index) + 1;
 			if (str[i] == '\0')
-				break;
+				break ;
 		}
 		n_str[j++] = str[i++];
 	}
@@ -43,10 +41,10 @@ static int del_var(t_token **token, char *str, int index)
 	return (0);
 }
 
-static char *del_replace(t_token **token, char *str, char *var_val, int index)
+static char	*del_replace(t_token **token, char *str, char *var_val, int index)
 {
-	char *n_str;
-	int n_size;
+	char	*n_str;
+	int		n_size;
 
 	n_size = (ft_strlen(str) - var_len(str + index)) + ft_strlen(var_val);
 	n_str = create_token_string(str, var_val, n_size, index);
@@ -58,7 +56,7 @@ static char *del_replace(t_token **token, char *str, char *var_val, int index)
 	return (n_str);
 }
 
-int replace_var(t_token **token, char *var_value, int index)
+int	replace_var(t_token **token, char *var_value, int index)
 {
 	if (var_value == NULL)
 	{
@@ -80,12 +78,13 @@ int replace_var(t_token **token, char *var_value, int index)
 	return (0);
 }
 
-char *replace_herdoc_var(char *str, char *var_val, int index)
+char	*replace_herdoc_var(char *str, char *var_val, int index)
 {
-	char *tmp;
-	char *new_str;
-	int var_name_len;
-	int i, j;
+	char	*tmp;
+	char	*new_str;
+	int		var_name_len;
+	int		i;
+	int		j;
 
 	if (var_val == NULL)
 	{

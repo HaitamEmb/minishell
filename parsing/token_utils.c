@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:40 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:40 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int	word(t_token **token_lst, char *str, int index, int start)
 {
-	int	i;
+	int		i;
 	char	*word;
 
 	i = 0;
@@ -28,13 +28,14 @@ static int	word(t_token **token_lst, char *str, int index, int start)
 		i++;
 	}
 	word[i] = '\0';
-	lst_add_prev(token_lst, lst_new_token(word, ft_strdup(word), WORD, DEFAULT));
+	lst_add_prev(token_lst, lst_new_token(word, ft_strdup(word), WORD,
+			DEFAULT));
 	return (0);
 }
 
 static int	command(t_token **head, char *str, int idx, int type)
 {
-	int	i;
+	int		i;
 	char	*cmd;
 
 	i = 0;
@@ -61,7 +62,7 @@ static int	command(t_token **head, char *str, int idx, int type)
 	return (0);
 }
 
-int is_command(char *str, int i)
+int	is_command(char *str, int i)
 {
 	if ((str[i] > 8 && str[i] < 14) || str[i] == 32)
 		return (TOKEN_SPACE);
@@ -81,7 +82,7 @@ int is_command(char *str, int i)
 		return (0);
 }
 
-int set_status(int status, char *str, int i)
+int	set_status(int status, char *str, int i)
 {
 	if (str[i] == '\'' && status == DEFAULT)
 		status = SINGLE;
@@ -94,18 +95,19 @@ int set_status(int status, char *str, int i)
 	return (status);
 }
 
-int word_or_command(int *i, char *str, int start, t_data *data)
+int	word_or_command(int *i, char *str, int start, t_data *data)
 {
-	int type;
+	int	type;
 
 	type = is_command(str, (*i));
 	if (type)
 	{
 		if ((*i) != 0 && is_command(str, (*i) - 1) == 0)
-			word(&data->token, str, (*i), start); 
-		if (type == APPEND || type == HEREDOC || type == PIPE || type == INPUT || type == OUTPUT || type == END)
+			word(&data->token, str, (*i), start);
+		if (type == APPEND || type == HEREDOC || type == PIPE || type == INPUT
+			|| type == OUTPUT || type == END)
 		{
-			command(&data->token, str, (*i), type); 
+			command(&data->token, str, (*i), type);
 			if (type == APPEND || type == HEREDOC)
 				(*i)++;
 		}

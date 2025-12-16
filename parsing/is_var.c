@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   is_var.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:57 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:59:57 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void check_var(t_token **token)
+void	check_var(t_token **token)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while ((*token)->str[i])
@@ -22,17 +22,17 @@ void check_var(t_token **token)
 		if ((*token)->str[i] == '$')
 		{
 			if ((*token)->prev && (*token)->prev->type == HEREDOC)
-				break;
+				break ;
 			(*token)->type = VAR;
-			return;
+			return ;
 		}
 		i++;
 	}
 }
 
-int is_var(t_token **lst_token)
+int	is_var(t_token **lst_token)
 {
-	t_token *tmp;
+	t_token	*tmp;
 
 	tmp = *lst_token;
 	if (!tmp)

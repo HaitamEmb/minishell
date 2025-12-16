@@ -3,17 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   expand_var.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:26 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:59:26 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:47:47 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// we take the token VAR we either expand it if its between double quotes or not.
 #include "minishell.h"
 
-static void update_local_status(t_token **token, char c)
+static void	update_local_status(t_token **token, char c)
 {
 	if (c == '\'' && (*token)->status == DEFAULT)
 		(*token)->status = SINGLE;
@@ -25,7 +24,7 @@ static void update_local_status(t_token **token, char c)
 		(*token)->status = DEFAULT;
 }
 
-static bool is_next_cmd(char c)
+static bool	is_next_cmd(char c)
 {
 	if (c == '$' || c == ' ' || c == '=' || c == '\0')
 		return (true);
@@ -33,7 +32,7 @@ static bool is_next_cmd(char c)
 		return (false);
 }
 
-static bool quoted_var(char *str, int i)
+static bool	quoted_var(char *str, int i)
 {
 	if (i > 0)
 	{
@@ -45,10 +44,10 @@ static bool quoted_var(char *str, int i)
 	return (false);
 }
 
-int expand_variables(t_data *data, t_token **token)
+int	expand_variables(t_data *data, t_token **token)
 {
-	t_token *tmp;
-	int i;
+	t_token	*tmp;
+	int		i;
 
 	tmp = *token;
 	while (tmp)
@@ -59,8 +58,11 @@ int expand_variables(t_data *data, t_token **token)
 			while (tmp->str[i])
 			{
 				update_local_status(&tmp, tmp->str[i]);
-				if (tmp->str[i] == '$' && quoted_var(tmp->str, i) == false && is_next_cmd(tmp->str[i + 1]) == false && (tmp->status == DEFAULT || tmp->status == DOUBLE))
-					replace_var(&tmp, recover_val(tmp, tmp->str + i, data), i);
+				if (tmp->str[i] == '$' && quoted_var(tmp->str, i) == false
+					&& is_next_cmd(tmp->str[i + 1]) == false
+					&& (tmp->status == DEFAULT || tmp->status == DOUBLE))
+					replace_var(&tmp,
+						recover_val(tmp, tmp->str + i, data), i);
 				else
 					i++;
 			}
@@ -70,11 +72,11 @@ int expand_variables(t_data *data, t_token **token)
 	return (SUCCESS);
 }
 
-char *expand_var_heredoc(t_data *data, char *str)
+char	*expand_var_heredoc(t_data *data, char *str)
 {
-	int i;
-	char *result;
-	int expanded;
+	int		i;
+	char	*result;
+	int		expanded;
 
 	expanded = 0;
 	result = ft_strdup(str);
@@ -86,7 +88,8 @@ char *expand_var_heredoc(t_data *data, char *str)
 		if (result[i] == '$' && is_next_cmd(result[i + 1]) == false
 			&& quoted_var(result, i) == false)
 		{
-			result = replace_herdoc_var(result, recover_val(NULL, result + i, data), i);
+			result = replace_herdoc_var(result,
+					recover_val(NULL, result + i, data), i);
 			expanded = 1;
 		}
 		else

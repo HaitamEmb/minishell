@@ -3,19 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_lst_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:58:56 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:58:56 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../minishell.h"
 
-static t_inout_fds *new_inout(void)
+static t_inout_fds	*new_inout(void)
 {
-	t_inout_fds *io;
+	t_inout_fds	*io;
 
 	io = malloc(sizeof(t_inout_fds));
 	if (!io)
@@ -32,9 +31,9 @@ static t_inout_fds *new_inout(void)
 	return (io);
 }
 
-t_command *lst_new_cmd(bool pipe_out)
+t_command	*lst_new_cmd(bool pipe_out)
 {
-	t_command *cmd;
+	t_command	*cmd;
 
 	cmd = malloc(sizeof(t_command));
 	if (!cmd)
@@ -50,16 +49,16 @@ t_command *lst_new_cmd(bool pipe_out)
 	return (cmd);
 }
 
-void lst_add_back_cmd(t_command **head, t_command *new_cmd)
+void	lst_add_back_cmd(t_command **head, t_command *new_cmd)
 {
-	t_command *last;
+	t_command	*last;
 
 	if (!head || !new_cmd)
-		return;
+		return ;
 	if (!*head)
 	{
 		*head = new_cmd;
-		return;
+		return ;
 	}
 	last = *head;
 	while (last->next)
@@ -68,7 +67,7 @@ void lst_add_back_cmd(t_command **head, t_command *new_cmd)
 	new_cmd->prev = last;
 }
 
-t_command *lst_last_cmd(t_command *cmd)
+t_command	*lst_last_cmd(t_command *cmd)
 {
 	if (!cmd)
 		return (NULL);
@@ -77,48 +76,10 @@ t_command *lst_last_cmd(t_command *cmd)
 	return (cmd);
 }
 
-void init_io(t_command *cmd)
+void	init_io(t_command *cmd)
 {
 	if (!cmd)
-		return;
+		return ;
 	if (!cmd->inout_fds)
 		cmd->inout_fds = new_inout();
-}
-
-void clear_cmd_list(t_command **head)
-{
-	t_command *tmp;
-
-	if (!head)
-		return;
-	while (*head)
-	{
-		tmp = (*head)->next;
-		if ((*head)->pipe_fd)
-		{
-			if ((*head)->pipe_fd[0] >= 0)
-				close((*head)->pipe_fd[0]);
-			if ((*head)->pipe_fd[1] >= 0)
-				close((*head)->pipe_fd[1]);
-			free((*head)->pipe_fd);
-		}
-		free_str_tab((*head)->args);
-		if ((*head)->inout_fds)
-		{
-			if ((*head)->inout_fds->fd_in >= 0 && (*head)->inout_fds->fd_in != STDIN_FILENO)
-				close((*head)->inout_fds->fd_in);
-			if ((*head)->inout_fds->fd_out >= 0 && (*head)->inout_fds->fd_out != STDOUT_FILENO)
-				close((*head)->inout_fds->fd_out);
-			if ((*head)->inout_fds->infile && (*head)->inout_fds->heredoc_del)
-				unlink((*head)->inout_fds->infile);
-			free_ptr((*head)->inout_fds->infile);
-			free_ptr((*head)->inout_fds->outfile);
-			free_ptr((*head)->inout_fds->heredoc_del);
-			free((*head)->inout_fds);
-		}
-		free_ptr((*head)->command);
-		free_ptr((*head)->path);
-		free(*head);
-		*head = tmp;
-	}
 }

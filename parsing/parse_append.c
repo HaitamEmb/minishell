@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parse_append.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:00 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:00 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static	void open_outfile_append(t_inout_fds *io, char *file, char *filename)
+static void	open_outfile_append(t_inout_fds *io, char *file, char *filename)
 {
 	if (!remove_old_file_ref(io, false))
 		return ;
@@ -29,7 +29,7 @@ static	void open_outfile_append(t_inout_fds *io, char *file, char *filename)
 
 void	parse_append(t_command **last_cmd, t_token **token_lst)
 {
-	t_token	*tmp;
+	t_token		*tmp;
 	t_command	*cmd;
 
 	tmp = *token_lst;

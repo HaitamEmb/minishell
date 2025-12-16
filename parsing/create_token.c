@@ -3,24 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   create_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:14 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:59:14 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:47:47 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int create_token(char *str, t_data *data)
+int	create_token(char *str, t_data *data)
 {
-	// we take the user input and filter between commands and words
-	// following the quotting rules in bash.
-
-	int i;
-	int end;
-	int start;
-	int status; // for quoting rules
+	int	i;
+	int	end;
+	int	start;
+	int	status;
 
 	i = 0;
 	start = 0;

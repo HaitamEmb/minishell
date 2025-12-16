@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   fill_cmd_args.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:30 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 01:59:30 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int args_len(t_token *tmp)
+int	args_len(t_token *tmp)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tmp && (tmp->type == WORD || tmp->type == VAR))
@@ -25,16 +25,16 @@ int args_len(t_token *tmp)
 	return (i);
 }
 
-int create_args_default(t_token **token, t_command *last_cmd)
+int	create_args_default(t_token **token, t_command *last_cmd)
 {
-	int i;
-	int nb_args;
-	t_token *tmp;
+	int		i;
+	int		nb_args;
+	t_token	*tmp;
 
 	i = 0;
 	tmp = *token;
 	nb_args = args_len(tmp);
-	last_cmd->args = malloc(sizeof(char *) * (nb_args + 2)); //+2
+	last_cmd->args = malloc(sizeof(char *) * (nb_args + 2));
 	if (!last_cmd->args)
 		return (FAILURE);
 	tmp = *token;
@@ -52,10 +52,11 @@ int create_args_default(t_token **token, t_command *last_cmd)
 	return (SUCCESS);
 }
 
-static char **copy_default_in_tab(int len, char **n_tab, t_command *last_cmd, t_token **token)
+static char	**copy_default_in_tab(int len, char **n_tab, t_command *last_cmd,
+		t_token **token)
 {
-	int i;
-	t_token *tmp;
+	int		i;
+	t_token	*tmp;
 
 	i = 0;
 	tmp = *token;
@@ -74,12 +75,12 @@ static char **copy_default_in_tab(int len, char **n_tab, t_command *last_cmd, t_
 	return (n_tab);
 }
 
-int add_args_default(t_token **token, t_command *last_cmd)
+int	add_args_default(t_token **token, t_command *last_cmd)
 {
-	int i;
-	int len;
-	char **n_tab;
-	t_token *tmp;
+	int		i;
+	int		len;
+	char	**n_tab;
+	t_token	*tmp;
 
 	i = 0;
 	tmp = *token;
@@ -101,7 +102,7 @@ int add_args_default(t_token **token, t_command *last_cmd)
 	return (SUCCESS);
 }
 
-int fill_args(t_token **token, t_command *last_cmd)
+int	fill_args(t_token **token, t_command *last_cmd)
 {
 	if (!ft_strcmp(last_cmd->command, "echo"))
 	{

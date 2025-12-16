@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   token_lst.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:32 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 02:00:32 by helmouta         ###   ########.fr       */
+/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_token *lst_new_token(char *str, char *str_back, int type, int status)
+t_token	*lst_new_token(char *str, char *str_back, int type, int status)
 {
-	t_token *new_token;
+	t_token	*new_token;
 
 	new_token = malloc(sizeof(t_token));
 	if (!new_token)
@@ -32,13 +32,13 @@ t_token *lst_new_token(char *str, char *str_back, int type, int status)
 
 void	lst_add_prev(t_token **head, t_token *new_token)
 {
-	t_token *start;
+	t_token	*start;
 
 	start = *head;
 	if (start == NULL)
 	{
 		*head = new_token;
-		return;
+		return ;
 	}
 	if (head && *head && new_token)
 	{
@@ -65,12 +65,13 @@ void	lst_deltoken(t_token *token, void (*del)(void *))
 		token->prev->next = token->next;
 	if (token->next)
 		token->next->prev = token->prev;
-	free_ptr(token); //add freeptr
+	free_ptr(token);
 }
 
 void	lst_clear(t_token **head, void (*del)(void *))
 {
-	t_token *tmp;
+	t_token	*tmp;
+
 	tmp = NULL;
 	while (*head != NULL)
 	{
