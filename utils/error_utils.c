@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   error_utils.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/16 10:59:49 by isingara          #+#    #+#             */
+/*   Updated: 2025/12/16 11:22:47 by isingara         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../minishell.h"
 
 void	exit_minishell(t_data *data, int exitno)
@@ -17,7 +29,6 @@ void	exit_minishell(t_data *data, int exitno)
 	}
 	exit(exitno);
 }
-
 
 static char	*strs_join(char *str, char *add)
 {
@@ -44,7 +55,9 @@ static bool	detail_quotes(char *cmd)
 int	errmsg_cmd(char *command, char *desc, char *emsg, int err_nb)
 {
 	char	*msg;
-	bool	quotes_detail = detail_quotes(command);
+	bool	quotes_detail;
+
+	quotes_detail = detail_quotes(command);
 	msg = ft_strdup("minishell: ");
 	if (command != NULL)
 	{
@@ -82,4 +95,3 @@ void	errmsg(char *errmsg, char *detail, int quotes)
 	ft_putendl_fd(msg, STDERR_FILENO);
 	free_ptr(msg);
 }
-
