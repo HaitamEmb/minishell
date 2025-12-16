@@ -228,7 +228,7 @@ print_subheader "Global Variables Analysis"
 echo -e "${CYAN}Checking global variables in source code...${NC}"
 # Find global variable definitions (not extern declarations)
 globals=$(grep -rh "^int g_" *.c execution/*.c parsing/*.c utils/*.c 2>/dev/null | grep -v "extern" | sort -u)
-global_count=$(echo "$globals" | grep -c "g_" 2>/dev/null || echo "0")
+global_count=$(echo "$globals" | grep -c "g_" 2>/dev/null || true)
 echo -e "${CYAN}Global variable(s) found: ${global_count}${NC}"
 echo -e "${CYAN}Found: g_exit_status (for signal handling - this is acceptable)${NC}"
 TOTAL_TESTS=$((TOTAL_TESTS + 1))

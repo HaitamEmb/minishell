@@ -25,6 +25,7 @@ SRCS		= \
 	parsing/token_utils.c \
 	parsing/var_id.c \
 	parsing/cmd_lst_utils.c \
+	parsing/cmd_lst_utils2.c \
 	parsing/parse_pipe.c \
 	parsing/parse_input.c \
 	parsing/parse_trunc.c \
