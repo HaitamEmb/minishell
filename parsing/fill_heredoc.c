@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:36 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 12:14:43 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,23 @@ static bool	eval_heredoc(t_data *data, char **line, t_inout_fds *io, bool *ret)
 	return (true);
 }
 
+static bool	check_line(char **line, bool *ret)
+{
+	*line = readline("> ");
+	if (!*line)
+	{
+		if (g_exit_status == 130)
+		{
+			*ret = false;
+			return (false);
+		}
+		errmsg("warning", "here-document delimited by end-of-file", 0);
+		*ret = true;
+		return (false);
+	}
+	return (true);
+}
+
 bool	fill_heredoc(t_data *data, t_inout_fds *io, int fd)
 {
 	char	*line;
@@ -108,18 +125,8 @@ bool	fill_heredoc(t_data *data, t_inout_fds *io, int fd)
 	setup_heredoc_signals();
 	while (1)
 	{
-		line = readline("> ");
-		if (!line)
-		{
-			if (g_exit_status == 130)
-			{
-				ret = false;
-				break ;
-			}
-			errmsg("warning", "here-document delimited by end-of-file", 0);
-			ret = true;
+		if (!check_line(&line, &ret))
 			break ;
-		}
 		if (!eval_heredoc(data, &line, io, &ret))
 			break ;
 		ft_putendl_fd(line, fd);

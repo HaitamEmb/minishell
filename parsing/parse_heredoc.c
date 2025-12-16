@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:04 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 12:14:43 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,23 @@ static char	*get_delim(char *delim, bool *quotes)
 	return (ft_strdup(delim));
 }
 
+static bool	init_heredoc_io(t_inout_fds *io, t_token *token)
+{
+	if (!remove_old_file_ref(io, true))
+		return (false);
+	io->infile = get_heredoc_name();
+	if (!io->infile)
+		return (false);
+	io->heredoc_del = get_delim(token->next->str, &(io->heredoc_quotes));
+	if (!io->heredoc_del)
+	{
+		free_ptr(io->infile);
+		io->infile = NULL;
+		return (false);
+	}
+	return (true);
+}
+
 void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
 {
 	t_token		*tmp;
@@ -64,18 +81,8 @@ void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
 	cmd = lst_last_cmd(*last_cmd);
 	init_io(cmd);
 	io = cmd->inout_fds;
-	if (!remove_old_file_ref(io, true))
+	if (!init_heredoc_io(io, tmp))
 		return ;
-	io->infile = get_heredoc_name();
-	if (!io->infile)
-		return ;
-	io->heredoc_del = get_delim(tmp->next->str, &(io->heredoc_quotes));
-	if (!io->heredoc_del)
-	{
-		free_ptr(io->infile);
-		io->infile = NULL;
-		return ;
-	}
 	success = get_heredoc(data, io);
 	if (success && g_exit_status != 130)
 		io->fd_in = open(io->infile, O_RDONLY);
@@ -86,8 +93,7 @@ void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
 			unlink(io->infile);
 	}
 	if (tmp->next->next)
-		tmp = tmp->next->next;
+		*token_lst = tmp->next->next;
 	else
-		tmp = tmp->next;
-	*token_lst = tmp;
+		*token_lst = tmp->next;
 }

@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:29 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 12:14:43 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,33 +78,37 @@ int	replace_var(t_token **token, char *var_value, int index)
 	return (0);
 }
 
-char	*replace_herdoc_var(char *str, char *var_val, int index)
+static char	*remove_var_from_str(char *str, int index)
 {
-	char	*tmp;
 	char	*new_str;
 	int		var_name_len;
 	int		i;
 	int		j;
 
-	if (var_val == NULL)
+	var_name_len = var_len(str + index);
+	new_str = malloc(ft_strlen(str) - var_name_len);
+	if (!new_str)
+		return (str);
+	i = 0;
+	j = 0;
+	while (str[i])
 	{
-		var_name_len = var_len(str + index);
-		new_str = malloc(ft_strlen(str) - var_name_len);
-		if (!new_str)
-			return (str);
-		i = 0;
-		j = 0;
-		while (str[i])
-		{
-			if (i == index)
-				i += var_name_len + 1;
-			if (str[i])
-				new_str[j++] = str[i++];
-		}
-		new_str[j] = '\0';
-		free_ptr(str);
-		return (new_str);
+		if (i == index)
+			i += var_name_len + 1;
+		if (str[i])
+			new_str[j++] = str[i++];
 	}
+	new_str[j] = '\0';
+	free_ptr(str);
+	return (new_str);
+}
+
+char	*replace_herdoc_var(char *str, char *var_val, int index)
+{
+	char	*tmp;
+
+	if (var_val == NULL)
+		return (remove_var_from_str(str, index));
 	tmp = str;
 	str = del_replace(NULL, str, var_val, index);
 	free_ptr(tmp);

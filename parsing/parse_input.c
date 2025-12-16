@@ -6,11 +6,35 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:09 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 12:14:43 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static void	remove_infile(t_inout_fds *io)
+{
+	if (io->heredoc_del != NULL)
+	{
+		free_ptr(io->heredoc_del);
+		io->heredoc_del = NULL;
+		unlink(io->infile);
+	}
+	free_ptr(io->infile);
+	io->infile = NULL;
+	if (io->fd_in >= 0)
+		close(io->fd_in);
+	io->fd_in = -1;
+}
+
+static void	remove_outfile(t_inout_fds *io)
+{
+	free_ptr(io->outfile);
+	io->outfile = NULL;
+	if (io->fd_out >= 0)
+		close(io->fd_out);
+	io->fd_out = -1;
+}
 
 bool	remove_old_file_ref(t_inout_fds *io, bool infile)
 {
@@ -18,27 +42,13 @@ bool	remove_old_file_ref(t_inout_fds *io, bool infile)
 	{
 		if (io->fd_in == -1 || (io->outfile && io->fd_out == -1))
 			return (false);
-		if (io->heredoc_del != NULL)
-		{
-			free_ptr(io->heredoc_del);
-			io->heredoc_del = NULL;
-			unlink(io->infile);
-		}
-		free_ptr(io->infile);
-		io->infile = NULL;
-		if (io->fd_in >= 0)
-			close(io->fd_in);
-		io->fd_in = -1;
+		remove_infile(io);
 	}
 	else if (infile == false && io->outfile)
 	{
 		if (io->fd_out == -1 || (io->infile && io->fd_in == -1))
 			return (false);
-		free_ptr(io->outfile);
-		io->outfile = NULL;
-		if (io->fd_out >= 0)
-			close(io->fd_out);
-		io->fd_out = -1;
+		remove_outfile(io);
 	}
 	return (true);
 }
