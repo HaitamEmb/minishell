@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 22:30:53 by isingara          #+#    #+#             */
-/*   Updated: 2025/11/29 22:30:53 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static int	open_output(t_inout_fds *io)
 	return (SUCCESS);
 }
 
-int	prepare_redirections(t_data *data, t_command *cmd)
+int	prepare_heredoc(t_data *data, t_command *cmd)
 {
 	t_inout_fds	*io;
 
@@ -69,7 +69,21 @@ int	prepare_redirections(t_data *data, t_command *cmd)
 		if (build_heredoc(data, io) == FAILURE)
 			return (FAILURE);
 	}
-	else if (io->infile && open_input(io) == FAILURE)
+	return (SUCCESS);
+}
+
+int	open_redirections(t_command *cmd)
+{
+	t_inout_fds	*io;
+
+	if (!cmd)
+		return (SUCCESS);
+	if (cmd->redir_failed)
+		return (FAILURE);
+	io = cmd->inout_fds;
+	if (!io)
+		return (SUCCESS);
+	if (io->infile && !io->heredoc_del && open_input(io) == FAILURE)
 		return (FAILURE);
 	if (io->outfile && open_output(io) == FAILURE)
 		return (FAILURE);

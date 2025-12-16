@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 22:30:27 by isingara          #+#    #+#             */
-/*   Updated: 2025/11/29 22:30:27 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,24 @@ static void	print_exec_error(char *cmd, char *msg)
 
 static void	execve_error(t_command *cmd)
 {
+	struct stat	st;
+
 	if (!cmd->command || cmd->command[0] == '\0')
 		print_exec_error(NULL, ": command not found");
 	else if (errno == ENOENT)
-		print_exec_error(cmd->command, "command not found");
+	{
+		if (ft_strchr(cmd->command, '/'))
+			print_exec_error(cmd->command, "No such file or directory");
+		else
+			print_exec_error(cmd->command, "command not found");
+	}
+	else if (errno == EACCES)
+	{
+		if (stat(cmd->command, &st) == 0 && S_ISDIR(st.st_mode))
+			print_exec_error(cmd->command, "Is a directory");
+		else
+			print_exec_error(cmd->command, strerror(errno));
+	}
 	else
 		print_exec_error(cmd->command, strerror(errno));
 	if (errno == EACCES)
@@ -63,8 +77,10 @@ static int	ensure_args(t_command *cmd)
 void	child_execute(t_data *data, t_command *cmd)
 {
 	setup_child_signals();
-	if (ensure_args(cmd) == FAILURE)
+	if (open_redirections(cmd) == FAILURE)
 		exit(1);
+	if (ensure_args(cmd) == FAILURE)
+		exit(0);
 	if (setup_input(cmd) == FAILURE || setup_output(cmd) == FAILURE)
 	{
 		perror("dup2");
@@ -80,7 +96,6 @@ void	child_execute(t_data *data, t_command *cmd)
 		cmd->path = resolve_command_path(data, cmd);
 	if (!cmd->path)
 	{
-		errno = ENOENT;
 		execve_error(cmd);
 	}
 	execve(cmd->path, cmd->args, data->env);

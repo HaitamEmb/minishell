@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:46 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	quote_str_len(char *str, int count, int i)
 {
 	int	status;
 
-	status = -1;
+	status = DEFAULT;
 	while (str[i])
 	{
 		if ((str[i] == '\'' || str[i] == '\"') && status == DEFAULT)

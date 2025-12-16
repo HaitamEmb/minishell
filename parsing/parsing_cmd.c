@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:22 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,8 @@ static void	var_to_command(t_command *last_cmd, char *cmd_str)
 	arr_str = ft_split(cmd_str, ' ');
 	if (!arr_str)
 		return ;
-	last_cmd->command = ft_strdup(arr_str[0]);
+	if (arr_str[0])
+		last_cmd->command = ft_strdup(arr_str[0]);
 	if (arr_str[1])
 		n_token = lst_new_token(ft_strdup(arr_str[1]), NULL, WORD, DEFAULT);
 	tmp = n_token;
@@ -65,6 +66,8 @@ void	parse_word(t_command **cmd, t_token **token)
 		{
 			if (tmp->type == VAR && str_has_space(tmp->str))
 				var_to_command(last_cmd, tmp->str);
+			else if (tmp->type == VAR && tmp->str[0] == '\0')
+				;
 			else
 				last_cmd->command = ft_strdup(tmp->str);
 			tmp = tmp->next;

@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 22:30:19 by isingara          #+#    #+#             */
-/*   Updated: 2025/11/29 22:30:19 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,9 @@ int	is_valid_identifier(const char *str)
 {
 	int	i;
 
-	if (!str || (!ft_isalnum(str[0]) && str[0] != '_'))
+	if (!str || (ft_isnum(str[0]) && str[0] != '_'))
+		return (0);
+	if (!ft_isalnum(str[0]) && str[0] != '_')
 		return (0);
 	i = 1;
 	while (str[i] && str[i] != '=')

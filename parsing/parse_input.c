@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:09 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 12:14:43 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,19 +53,28 @@ bool	remove_old_file_ref(t_inout_fds *io, bool infile)
 	return (true);
 }
 
-static void	open_file(t_inout_fds *io, char *file, char *original_file)
+static void	open_file(t_command *cmd, char *file, char *original_file)
 {
+	t_inout_fds	*io;
+
+	io = cmd->inout_fds;
+	if (cmd->redir_failed)
+		return ;
 	if (!remove_old_file_ref(io, true))
 		return ;
 	io->infile = ft_strdup(file);
 	if (io->infile && io->infile[0] == '\0')
 	{
 		errmsg_cmd(original_file, NULL, "bad redirect", false);
+		cmd->redir_failed = true;
 		return ;
 	}
 	io->fd_in = open(io->infile, O_RDONLY);
 	if (io->fd_in == -1)
+	{
 		errmsg_cmd(io->infile, NULL, strerror(errno), false);
+		cmd->redir_failed = true;
+	}
 }
 
 void	parse_input(t_command **last_cmd, t_token **token_lst)
@@ -76,7 +85,7 @@ void	parse_input(t_command **last_cmd, t_token **token_lst)
 	tmp = *token_lst;
 	cmd = lst_last_cmd(*last_cmd);
 	init_io(cmd);
-	open_file(cmd->inout_fds, tmp->next->str, tmp->next->str_back);
+	open_file(cmd, tmp->next->str, tmp->next->str_back);
 	if (tmp->next->next)
 		tmp = tmp->next->next;
 	else

@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 22:27:01 by isingara          #+#    #+#             */
-/*   Updated: 2025/11/29 22:27:01 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,8 +59,9 @@ static int	exit_error(char *arg, bool in_child)
 	write(STDERR_FILENO, ": numeric argument required\n",
 		sizeof(": numeric argument required\n") - 1);
 	if (in_child)
-		exit(255);
-	g_exit_status = 255;
+		exit(2);
+	g_exit_status = 2;
+	exit(2);
 	return (g_exit_status);
 }
 

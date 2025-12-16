@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:15:00 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 12:19:09 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ typedef struct s_command
 	char				**args;
 	char				*path;
 	bool				pipe_out;
+	bool				redir_failed;
 	int					*pipe_fd;
 	t_inout_fds			*inout_fds;
 	struct s_command	*next;
@@ -245,7 +246,8 @@ int			builtin_unset(t_data *data, t_command *cmd);
 int			builtin_env(t_data *data);
 int			builtin_exit(t_data *data, t_command *cmd, bool in_child);
 
-int			prepare_redirections(t_data *data, t_command *cmd);
+int			prepare_heredoc(t_data *data, t_command *cmd);
+int			open_redirections(t_command *cmd);
 int			apply_parent_redirs(t_inout_fds *io);
 void		restore_parent_redirs(t_inout_fds *io);
 void		close_command_fds(t_command *cmd);

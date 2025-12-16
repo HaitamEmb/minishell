@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 22:30:45 by isingara          #+#    #+#             */
-/*   Updated: 2025/11/29 22:30:45 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,14 @@ char	*resolve_command_path(t_data *data, t_command *cmd)
 		return (NULL);
 	if (ft_strchr(cmd->command, '/'))
 	{
-		if (access(cmd->command, X_OK) == 0)
-			return (ft_strdup(cmd->command));
+		if (access(cmd->command, F_OK) == 0)
+		{
+			if (access(cmd->command, X_OK) == 0)
+				return (ft_strdup(cmd->command));
+			errno = EACCES;
+			return (NULL);
+		}
+		errno = ENOENT;
 		return (NULL);
 	}
 	path_value = ms_getenv(data, "PATH");
@@ -67,5 +73,7 @@ char	*resolve_command_path(t_data *data, t_command *cmd)
 		return (NULL);
 	resolved = search_in_path(paths, cmd->command);
 	free_str_tab(paths);
+	if (!resolved)
+		errno = ENOENT;
 	return (resolved);
 }

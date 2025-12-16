@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:58:56 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ t_command	*lst_new_cmd(bool pipe_out)
 	cmd->args = NULL;
 	cmd->path = NULL;
 	cmd->pipe_out = pipe_out;
+	cmd->redir_failed = false;
 	cmd->pipe_fd = NULL;
 	cmd->inout_fds = new_inout();
 	cmd->next = NULL;

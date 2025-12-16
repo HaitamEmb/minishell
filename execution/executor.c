@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 21:46:32 by isingara          #+#    #+#             */
-/*   Updated: 2025/11/29 21:46:32 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ static int	execute_single_builtin(t_data *data, t_command *cmd)
 {
 	int	status;
 
-	if (prepare_redirections(data, cmd) == FAILURE)
+	if (prepare_heredoc(data, cmd) == FAILURE || open_redirections(cmd) == FAILURE)
 	{
 		g_exit_status = 1;
 		return (FAILURE);
@@ -81,7 +81,7 @@ static int	fork_pipeline(t_data *data, pid_t *pids, size_t *launched)
 	{
 		if (create_pipe_for_cmd(cmd) == FAILURE)
 			return (FAILURE);
-		if (prepare_redirections(data, cmd) == FAILURE)
+		if (prepare_heredoc(data, cmd) == FAILURE)
 		{
 			g_exit_status = 1;
 			return (FAILURE);
