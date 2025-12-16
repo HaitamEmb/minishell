@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 01:59:05 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 11:59:03 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:07:52 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,31 +32,42 @@ static void	cmds_with_no_args(t_data *data)
 	cmd = lst_last_cmd(data->cmd);
 }
 
-void	create_cmd(t_data *data, t_token *token)
+static int	handle_token(t_data *data, t_token **tmp)
+{
+	if ((*tmp)->type == WORD || (*tmp)->type == VAR)
+		parse_word(&data->cmd, tmp);
+	else if ((*tmp)->type == INPUT)
+		parse_input(&data->cmd, tmp);
+	else if ((*tmp)->type == OUTPUT)
+		parse_trunc(&data->cmd, tmp);
+	else if ((*tmp)->type == HEREDOC)
+	{
+		if (parse_heredoc(data, &data->cmd, tmp) == FAILURE)
+			return (FAILURE);
+	}
+	else if ((*tmp)->type == APPEND)
+		parse_append(&data->cmd, tmp);
+	else if ((*tmp)->type == PIPE)
+		parse_pipe(&data->cmd, tmp);
+	return (SUCCESS);
+}
+
+int	create_cmd(t_data *data, t_token *token)
 {
 	t_token	*tmp;
 
 	tmp = token;
 	if (tmp->type == END)
-		return ;
+		return (SUCCESS);
 	while (tmp->next != NULL)
 	{
 		if (tmp == token)
 			lst_add_back_cmd(&data->cmd, lst_new_cmd(false));
-		if (tmp->type == WORD || tmp->type == VAR)
-			parse_word(&data->cmd, &tmp);
-		else if (tmp->type == INPUT)
-			parse_input(&data->cmd, &tmp);
-		else if (tmp->type == OUTPUT)
-			parse_trunc(&data->cmd, &tmp);
-		else if (tmp->type == HEREDOC)
-			parse_heredoc(data, &data->cmd, &tmp);
-		else if (tmp->type == APPEND)
-			parse_append(&data->cmd, &tmp);
-		else if (tmp->type == PIPE)
-			parse_pipe(&data->cmd, &tmp);
-		else if (tmp->type == END)
+		if (tmp->type == END)
 			break ;
+		if (handle_token(data, &tmp) == FAILURE)
+			return (FAILURE);
 	}
 	cmds_with_no_args(data);
+	return (SUCCESS);
 }

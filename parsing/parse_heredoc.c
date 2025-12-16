@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:00:04 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 12:14:43 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:07:52 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,12 +16,29 @@ bool	get_heredoc(t_data *data, t_inout_fds *io)
 {
 	int		tmp_fd;
 	bool	ret;
+	pid_t	pid;
+	int		status;
 
-	ret = true;
-	tmp_fd = open(io->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	ret = fill_heredoc(data, io, tmp_fd);
-	close (tmp_fd);
-	return (ret);
+	pid = fork();
+	if (pid == -1)
+		return (false);
+	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		tmp_fd = open(io->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		ret = fill_heredoc(data, io, tmp_fd);
+		close(tmp_fd);
+		if (ret)
+			exit(0);
+		exit(1);
+	}
+	signal(SIGINT, SIG_IGN);
+	waitpid(pid, &status, 0);
+	setup_signals();
+	if (WIFEXITED(status) && WEXITSTATUS(status) == 0)
+		return (true);
+	g_exit_status = 130;
+	return (false);
 }
 
 static char	*get_heredoc_name(void)
@@ -70,7 +87,7 @@ static bool	init_heredoc_io(t_inout_fds *io, t_token *token)
 	return (true);
 }
 
-void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
+int	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
 {
 	t_token		*tmp;
 	t_command	*cmd;
@@ -82,18 +99,19 @@ void	parse_heredoc(t_data *data, t_command **last_cmd, t_token **token_lst)
 	init_io(cmd);
 	io = cmd->inout_fds;
 	if (!init_heredoc_io(io, tmp))
-		return ;
+		return (FAILURE);
 	success = get_heredoc(data, io);
-	if (success && g_exit_status != 130)
+	if (success)
 		io->fd_in = open(io->infile, O_RDONLY);
 	else
 	{
 		io->fd_in = -1;
-		if (g_exit_status == 130)
-			unlink(io->infile);
+		unlink(io->infile);
+		return (FAILURE);
 	}
 	if (tmp->next->next)
 		*token_lst = tmp->next->next;
 	else
 		*token_lst = tmp->next;
+	return (SUCCESS);
 }

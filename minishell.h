@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/16 02:15:00 by helmouta          #+#    #+#             */
-/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:07:52 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ int			create_args_default(t_token **token, t_command *last_cmd);
 int			create_args_echo(t_token **token, t_command *last_cmd);
 int			args_len(t_token *tmp);
 int			args_len_echo(t_token *tmp);
-void		create_cmd(t_data *data, t_token *token);
+int			create_cmd(t_data *data, t_token *token);
 char		**copy_in_new_tab(int len, char **n_tab, t_command *last_cmd,
 				t_token *tmp);
 void		del_empty_args(t_token **token);
@@ -205,7 +205,7 @@ char		*get_relative_path(char *file_to_open);
 bool		remove_old_file_ref(t_inout_fds *io, bool infile);
 void		parse_input(t_command **last_cmd, t_token **token_lst);
 void		parse_append(t_command	**last_cmd, t_token **token_lst);
-void		parse_heredoc(t_data *data, t_command **last_cmd,
+int			parse_heredoc(t_data *data, t_command **last_cmd,
 				t_token **token_lst);
 bool		fill_heredoc(t_data *data, t_inout_fds *io, int fd);
 void		parse_pipe(t_command **cmd, t_token **token_lst);

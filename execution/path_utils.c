@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 22:30:45 by isingara          #+#    #+#             */
-/*   Updated: 2025/12/16 17:11:15 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:07:52 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,10 @@ char	*resolve_command_path(t_data *data, t_command *cmd)
 		return (check_direct_path(cmd->command));
 	path_value = ms_getenv(data, "PATH");
 	if (!path_value)
+	{
+		errno = ENOENT;
 		return (NULL);
+	}
 	paths = ft_split(path_value, ':');
 	free_ptr(path_value);
 	if (!paths)

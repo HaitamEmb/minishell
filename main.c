@@ -6,7 +6,7 @@
 /*   By: isingara <isingara@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 22:33:00 by isingara          #+#    #+#             */
-/*   Updated: 2025/12/16 15:25:53 by isingara         ###   ########.fr       */
+/*   Updated: 2025/12/16 18:07:52 by isingara         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,7 @@ static void	run_line(t_data *data)
 		return ;
 	if (handle_quotes(data) != SUCCESS)
 		return ;
-	create_cmd(data, data->token);
-	if (g_exit_status == 130)
+	if (create_cmd(data, data->token) == FAILURE)
 		return ;
 	if (data->cmd)
 		run_execution(data);
