@@ -183,10 +183,8 @@ void lst_add_back_cmd(t_command **head, t_command *new_cmd);
 t_command *lst_last_cmd(t_command *cmd);
 void init_io(t_command *cmd);
 void clear_cmd_list(t_command **head);
-t_command lst_first_cmd(t_command *cmd); //DEPRECATED
 
 ////////////////////////////////////////////////////
-void	lst_delone_cmd(t_command *lst, void(*del)(void *)); //deprecated
 void	parse_trunc(t_command **lst, t_token **token_lst);
 char	*get_relative_path(char *file_to_open);
 bool	remove_old_file_ref(t_inout_fds *io, bool infile);

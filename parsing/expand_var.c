@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expand_var.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/16 01:59:26 by helmouta          #+#    #+#             */
+/*   Updated: 2025/12/16 01:59:26 by helmouta         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // we take the token VAR we either expand it if its between double quotes or not.
 #include "minishell.h"
 

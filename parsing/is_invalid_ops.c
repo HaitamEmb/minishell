@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   is_invalid_ops.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: helmouta <helmouta@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/12/16 01:59:54 by helmouta          #+#    #+#             */
+/*   Updated: 2025/12/16 01:59:54 by helmouta         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 // checks for invalid operators format, for example double || or triple redirect >>>
 #include "minishell.h"
 
